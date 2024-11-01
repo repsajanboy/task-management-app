@@ -8,7 +8,9 @@ class AppRouter {
     switch (routeSettings.name) {
       case RouteNames.menu:
         return MaterialPageRoute(
-          builder: (_) => const BottomNavBarPage(),
+          builder: (_) => const BottomNavBarScreen(
+            currIndex: 0,
+          ),
         );
       default:
         return MaterialPageRoute(
