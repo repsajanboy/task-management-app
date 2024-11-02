@@ -80,7 +80,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
             color: AppColors.bottomNavItemColor,
           ),
           activeIcon: const Icon(
-            Icons.dashboard_outlined,
+            Icons.dashboard,
             color: AppColors.bottomNavItemActiveColor,
           ),
         );
@@ -93,7 +93,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
             color: AppColors.bottomNavItemColor,
           ),
           activeIcon: const Icon(
-            Icons.calendar_month_outlined,
+            Icons.calendar_month,
             color: AppColors.bottomNavItemActiveColor,
           ),
         );
@@ -106,7 +106,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
             color: AppColors.bottomNavItemColor,
           ),
           activeIcon: const Icon(
-            Icons.notifications_outlined,
+            Icons.notifications,
             color: AppColors.bottomNavItemActiveColor,
           ),
         );
@@ -119,7 +119,7 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
             color: AppColors.bottomNavItemColor,
           ),
           activeIcon: const Icon(
-            Icons.person_outline,
+            Icons.person,
             color: AppColors.bottomNavItemActiveColor,
           ),
         );
