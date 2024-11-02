@@ -8,6 +8,7 @@ import 'package:task_management_app/presentation/dashboard/dashboard.dart';
 import 'package:task_management_app/presentation/notification/notification.dart';
 import 'package:task_management_app/presentation/planner/planner.dart';
 import 'package:task_management_app/presentation/profile/profile.dart';
+import 'package:task_management_app/styles/colors.dart';
 
 class BottomNavBarScreen extends StatefulWidget {
   final int currIndex;
@@ -42,12 +43,23 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
   Widget _buildTab(BuildContext context, CreateBottomTab state) {
     final items = state.items.map((type) => _getItem(type));
     return Scaffold(
+      backgroundColor: AppColors.background,
       body: IndexedStack(
         index: state.currentIndex,
         children: items.map((e) => e.page).toList(),
       ),
       bottomNavigationBar: Container(
+        decoration: const BoxDecoration(color: AppColors.lightBlack),
         child: BottomNavigationBar(
+          backgroundColor: AppColors.lightBlack,
+          type: BottomNavigationBarType.fixed,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          currentIndex: state.currentIndex,
+          onTap: (int index) {
+            BlocProvider.of<BottomTabBloc>(context)
+                .add(BottomTabChanged(index));
+          },
           items: items
               .map((e) => BottomNavigationBarItem(
                   icon: e.icon, label: e.title, activeIcon: e.activeIcon))
@@ -63,29 +75,53 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
         return BottomTabItem(
           page: const DashboardScreen(),
           title: '',
-          icon: const Icon(Icons.dashboard),
-          activeIcon: const Icon(Icons.dashboard),
+          icon: const Icon(
+            Icons.dashboard_outlined,
+            color: AppColors.bottomNavItemColor,
+          ),
+          activeIcon: const Icon(
+            Icons.dashboard_outlined,
+            color: AppColors.bottomNavItemActiveColor,
+          ),
         );
       case BottomTabItemType.planner:
         return BottomTabItem(
           page: const PlannerScreen(),
           title: '',
-          icon: const Icon(Icons.calendar_month),
-          activeIcon: const Icon(Icons.calendar_month),
+          icon: const Icon(
+            Icons.calendar_month_outlined,
+            color: AppColors.bottomNavItemColor,
+          ),
+          activeIcon: const Icon(
+            Icons.calendar_month_outlined,
+            color: AppColors.bottomNavItemActiveColor,
+          ),
         );
       case BottomTabItemType.notification:
         return BottomTabItem(
           page: const NotificationScreen(),
           title: '',
-          icon: const Icon(Icons.notifications),
-          activeIcon: const Icon(Icons.notifications),
+          icon: const Icon(
+            Icons.notifications_outlined,
+            color: AppColors.bottomNavItemColor,
+          ),
+          activeIcon: const Icon(
+            Icons.notifications_outlined,
+            color: AppColors.bottomNavItemActiveColor,
+          ),
         );
       case BottomTabItemType.profile:
         return BottomTabItem(
           page: const ProfileScreen(),
           title: '',
-          icon: const Icon(Icons.person),
-          activeIcon: const Icon(Icons.person),
+          icon: const Icon(
+            Icons.person_outline,
+            color: AppColors.bottomNavItemColor,
+          ),
+          activeIcon: const Icon(
+            Icons.person_outline,
+            color: AppColors.bottomNavItemActiveColor,
+          ),
         );
       default:
         return BottomTabItem(
