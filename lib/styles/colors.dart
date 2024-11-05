@@ -6,4 +6,8 @@ class AppColors {
   //Bottom tab
   static const bottomNavItemColor = Color(0xffa8a8a8);
   static const bottomNavItemActiveColor = Color(0xff579DFF);
+
+  //Texts
+  static const mainTextColor = Color(0xffDBD8E3);
+
 }
