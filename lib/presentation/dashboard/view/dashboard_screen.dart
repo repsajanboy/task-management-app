@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_management_app/presentation/dashboard/view/widget/add_board_widget.dart';
 import 'package:task_management_app/presentation/dashboard/view/widget/greeting_message.dart';
 import 'package:task_management_app/styles/colors.dart';
 
@@ -156,34 +157,7 @@ class DashboardScreen extends StatelessWidget {
                   ),
                 );
               } else {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.lightBlack,
-                    border: Border.all(color: Colors.white70),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(8.0),
-                    ),
-                  ),
-                  child: const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.add_circle_outline_rounded,
-                          color: AppColors.mainTextColor,
-                          size: 64,
-                        ),
-                        Text(
-                          'Add board',
-                          style: TextStyle(
-                            fontFamily: 'Chivo',
-                            color: AppColors.mainTextColor,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
+                return const AddBoardWidget();
               }
             },
           ),
