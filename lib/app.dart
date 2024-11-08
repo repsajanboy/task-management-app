@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task_management_app/networking/repositories/boards_repository.dart';
+import 'package:task_management_app/presentation/dashboard/dashboard.dart';
 import 'package:task_management_app/routing/app_router.dart';
 
 class MyApp extends StatelessWidget {
@@ -7,10 +10,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Task Management App',
-      debugShowCheckedModeBanner: false,
-      onGenerateRoute: router.onGenerateRoute,
+    return MultiRepositoryProvider(
+      providers: [
+        RepositoryProvider<BoardsRepository>(
+          create: (context) => BoardsRepository(),
+        )
+      ],
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => CreateBoardBloc(
+                boardsRepository: context.read<BoardsRepository>()),
+          ),
+        ],
+        child: MaterialApp(
+          title: 'Task Management App',
+          debugShowCheckedModeBanner: false,
+          onGenerateRoute: router.onGenerateRoute,
+        ),
+      ),
     );
   }
 }

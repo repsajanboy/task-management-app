@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task_management_app/presentation/dashboard/dashboard.dart';
 import 'package:task_management_app/presentation/dashboard/view/widget/background_color_picker.dart';
 import 'package:task_management_app/presentation/dashboard/view/widget/board_title_textfield.dart';
 import 'package:task_management_app/styles/colors.dart';
@@ -78,7 +80,7 @@ class AddBoardWidget extends StatelessWidget {
               const SizedBox(height: 10.0),
               const BoardTitleWidget(),
               const SizedBox(height: 10.0),
-              BoardBackgroundPicker(),
+              const BoardBackgroundPicker(),
             ],
           ),
         ),
@@ -105,10 +107,17 @@ class AddBoardWidget extends StatelessWidget {
                 fontSize: 18.0,
                 fontWeight: FontWeight.w700),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.add),
-            color: Colors.blue,
+          BlocBuilder<CreateBoardBloc, CreateBoardState>(
+            builder: (context, state) {
+              return IconButton(
+                onPressed: () {
+                  context.read<CreateBoardBloc>().add(CreateBoardSaved());
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.add),
+                color: Colors.blue,
+              );
+            },
           ),
         ],
       ),

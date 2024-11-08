@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task_management_app/presentation/dashboard/dashboard.dart';
 import 'package:task_management_app/styles/colors.dart';
 
 class BoardTitleWidget extends StatelessWidget {
@@ -25,20 +27,30 @@ class BoardTitleWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 5.0),
-        TextFormField(
-          cursorColor: AppColors.mainTextColor,
-          style: const TextStyle(
-            fontFamily: "Chivo",
-            color: AppColors.mainTextColor,
-          ),
-          decoration: const InputDecoration(
-            border: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.mainTextColor),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: AppColors.mainTextColor),
-            ),
-          ),
+        BlocBuilder<CreateBoardBloc, CreateBoardState>(
+          builder: (context, state) {
+            //Add textform field validator for title if empty
+            return TextFormField(
+              cursorColor: AppColors.mainTextColor,
+              style: const TextStyle(
+                fontFamily: "Chivo",
+                color: AppColors.mainTextColor,
+              ),
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.mainTextColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: AppColors.mainTextColor),
+                ),
+              ),
+              onChanged: (value) {
+                context
+                    .read<CreateBoardBloc>()
+                    .add(CreateBoardTitleChanged(boardTitle: value));
+              },
+            );
+          },
         ),
         const SizedBox(), //validation text space
       ],
