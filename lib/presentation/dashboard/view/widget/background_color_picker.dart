@@ -17,6 +17,7 @@ class BoardBackgroundPicker extends StatelessWidget {
           style: TextStyle(
             fontFamily: 'Montserrat',
             color: AppColors.mainTextColor,
+            fontSize: 16.0
           ),
         ),
         const SizedBox(height: 10.0),

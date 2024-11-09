@@ -94,10 +94,17 @@ class AddBoardWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.close),
-            color: Colors.white54,
+          BlocBuilder<CreateBoardBloc, CreateBoardState>(
+            builder: (context, state) {
+              return IconButton(
+                onPressed: () {
+                  context.read<CreateBoardBloc>().add(RemoveCreateBoardSelectedBackgroundColorIndex());
+                  Navigator.pop(context);
+                } ,
+                icon: const Icon(Icons.close),
+                color: Colors.white54,
+              );
+            },
           ),
           const Text(
             'Create board',
@@ -110,10 +117,13 @@ class AddBoardWidget extends StatelessWidget {
           BlocBuilder<CreateBoardBloc, CreateBoardState>(
             builder: (context, state) {
               return IconButton(
-                onPressed: () {
-                  context.read<CreateBoardBloc>().add(CreateBoardSaved());
-                  Navigator.pop(context);
-                },
+                onPressed: (state.boardTitle ?? '').trim().isEmpty
+                    ? null
+                    : () {
+                        context.read<CreateBoardBloc>().add(CreateBoardSaved());
+                        Navigator.pop(context);
+                      },
+                disabledColor: Colors.white54,
                 icon: const Icon(Icons.add),
                 color: Colors.blue,
               );

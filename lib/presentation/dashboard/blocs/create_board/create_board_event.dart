@@ -12,7 +12,12 @@ class CreateBoardBackgroundColorSelected extends CreateBoardEvent {
   final String? boardBackgroundColor;
   final int? selectedBackgroundColorIndex;
 
-  CreateBoardBackgroundColorSelected({this.boardBackgroundColor, this.selectedBackgroundColorIndex});
+  CreateBoardBackgroundColorSelected({
+    this.boardBackgroundColor,
+    this.selectedBackgroundColorIndex,
+  });
 }
+
+class RemoveCreateBoardSelectedBackgroundColorIndex extends CreateBoardEvent {}
 
 class CreateBoardSaved extends CreateBoardEvent {}
