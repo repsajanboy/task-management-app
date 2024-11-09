@@ -8,30 +8,31 @@ class BoardTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        RichText(
-          text: const TextSpan(
-            text: 'Board title ',
-            style: TextStyle(
-              fontFamily: 'Montserrat',
-              color: AppColors.mainTextColor,
+    return BlocBuilder<CreateBoardBloc, CreateBoardState>(
+      builder: (context, state) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            RichText(
+              text: const TextSpan(
+                text: 'Board title ',
+                style: TextStyle(
+                  fontFamily: 'Montserrat',
+                  color: AppColors.mainTextColor,
+                  fontSize: 16.0
+                ),
+                children: [
+                  TextSpan(
+                    text: '*',
+                    style: TextStyle(color: Colors.red),
+                  )
+                ],
+              ),
             ),
-            children: [
-              TextSpan(
-                text: '*',
-                style: TextStyle(color: Colors.red),
-              )
-            ],
-          ),
-        ),
-        const SizedBox(height: 5.0),
-        BlocBuilder<CreateBoardBloc, CreateBoardState>(
-          builder: (context, state) {
-            //Add textform field validator for title if empty
-            return TextFormField(
+            const SizedBox(height: 5.0),
+            TextFormField(
               cursorColor: AppColors.mainTextColor,
+              autofocus: true,
               style: const TextStyle(
                 fontFamily: "Chivo",
                 color: AppColors.mainTextColor,
@@ -49,11 +50,25 @@ class BoardTitleWidget extends StatelessWidget {
                     .read<CreateBoardBloc>()
                     .add(CreateBoardTitleChanged(boardTitle: value));
               },
-            );
-          },
-        ),
-        const SizedBox(), //validation text space
-      ],
+            ),
+            if ((state.boardTitle ?? '').trim().isEmpty)
+              RichText(
+                text: const TextSpan(
+                  text: '👋',
+                  children: [
+                    TextSpan(
+                      text: 'Hi, board title is required',
+                      style: TextStyle(
+                        fontFamily: 'Chivo',
+                        color: Colors.white54,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+          ],
+        );
+      },
     );
   }
 }
