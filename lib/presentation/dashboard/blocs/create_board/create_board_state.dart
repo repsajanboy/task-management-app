@@ -2,7 +2,7 @@ part of 'create_board_bloc.dart';
 
 class CreateBoardState extends Equatable {
   final String? boardTitle;
-  final String? boardBackgroundColor;
+  final int? boardBackgroundColor;
   final int? selectedBackgroundColorIndex;
 
   const CreateBoardState({
@@ -13,7 +13,7 @@ class CreateBoardState extends Equatable {
 
   CreateBoardState copyWith({
     String? boardTitle,
-    String? boardBackgroundColor,
+    int? boardBackgroundColor,
     int? selectedBackgroundColorIndex,
   }) {
     return CreateBoardState(

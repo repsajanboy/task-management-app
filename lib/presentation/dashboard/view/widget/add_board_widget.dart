@@ -12,7 +12,7 @@ class AddBoardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        showModalBottomSheet(
+        showModalBottomSheet<void>(
           context: context,
           isDismissible: false,
           isScrollControlled: true,
@@ -25,7 +25,9 @@ class AddBoardWidget extends StatelessWidget {
           builder: (BuildContext context) {
             return _createBoardModal(context);
           },
-        );
+        ).whenComplete(() {
+          BlocProvider.of<BoardsListBloc>(context).add(BoardsFetched());
+        });
       },
       child: Container(
         decoration: BoxDecoration(

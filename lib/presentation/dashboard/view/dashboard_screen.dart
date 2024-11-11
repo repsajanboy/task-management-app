@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task_management_app/presentation/dashboard/dashboard.dart';
 import 'package:task_management_app/presentation/dashboard/view/widget/add_board_widget.dart';
 import 'package:task_management_app/presentation/dashboard/view/widget/greeting_message.dart';
 import 'package:task_management_app/styles/colors.dart';
+
+int hexToInteger(String hex) => int.parse(hex, radix: 16);
+
+extension StringColorExtensions on String {
+  Color toColor() => Color(hexToInteger(this));
+}
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});
@@ -81,7 +89,6 @@ class DashboardScreen extends StatelessWidget {
   Widget _boardsCardWidget() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         const Padding(
           padding: EdgeInsets.only(left: 24.0, top: 8.0),
@@ -96,69 +103,77 @@ class DashboardScreen extends StatelessWidget {
         ),
         Container(
           padding: const EdgeInsets.only(left: 24.0, right: 24.0),
-          margin: const EdgeInsets.only(bottom: 18.0), //update this to better approach
-          child: GridView.builder(
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              crossAxisSpacing: 16.0,
-              mainAxisSpacing: 16.0,
-              childAspectRatio: .8
-            ),
-            shrinkWrap: true,
-            itemCount: 4,
-            itemBuilder: (BuildContext context, int index) {
-              if (index < 3) {
-                return Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.lightBlack,
-                    border: Border.all(color: Colors.white70),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(8.0),
-                    ),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 8.0, top: 8.0),
-                          child: Text(
-                            'Board ${index + 1}',
-                            style: const TextStyle(
-                                fontFamily: 'Chivo',
-                                color: AppColors.mainTextColor,
-                                fontSize: 18),
-                          ),
+          margin: const EdgeInsets.only(
+              bottom: 18.0), //update this to better approach
+          child: BlocBuilder<BoardsListBloc, BoardsListState>(
+            builder: (context, state) {
+              return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  childAspectRatio: .8,
+                ),
+                shrinkWrap: true,
+                itemCount: state.boards.length + 1,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index == 0) {
+                    return const AddBoardWidget();
+                  } else {
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.lightBlack,
+                        border: Border.all(color: Colors.white70),
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(8.0),
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Colors
-                                .blue, //change base on selected background color
-                            borderRadius: BorderRadius.only(
-                              bottomLeft: Radius.circular(8.0),
-                              bottomRight: Radius.circular(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              padding:
+                                  const EdgeInsets.only(left: 8.0, top: 8.0),
+                              child: Text(
+                                state.boards[index - 1].boardTitle!,
+                                style: const TextStyle(
+                                  fontFamily: 'Chivo',
+                                  color: AppColors.mainTextColor,
+                                  fontSize: 18,
+                                ),
+                              ),
                             ),
                           ),
-                          child: const Align(
-                            alignment: Alignment.centerRight,
-                            child: Icon(
-                              Icons.chevron_right,
-                              color: AppColors.mainTextColor,
-                              size: 32.0,
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Color(
+                                  state.boards[index - 1].boardBackgroundColor!,
+                                ),
+                                borderRadius: const BorderRadius.only(
+                                  bottomLeft: Radius.circular(8.0),
+                                  bottomRight: Radius.circular(8.0),
+                                ),
+                              ),
+                              child: const Align(
+                                alignment: Alignment.centerRight,
+                                child: Icon(
+                                  Icons.chevron_right,
+                                  color: AppColors.mainTextColor,
+                                  size: 32.0,
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                );
-              } else {
-                return const AddBoardWidget();
-              }
+                    );
+                  }
+                },
+              );
             },
           ),
         ),

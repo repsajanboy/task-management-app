@@ -7,4 +7,9 @@ class FirebaseFirestoreApi {
   Future<void> createNewBoard(CraeteBoardModel boards) async {
     return await boardsReference.doc().set(boards.toJson());
   }
+
+  Future<dynamic> getBoards () async {
+    QuerySnapshot snapshot = await boardsReference.get();
+    return snapshot.docs;
+  }
 }
