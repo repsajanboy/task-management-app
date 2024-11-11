@@ -1,6 +1,6 @@
 class CraeteBoardModel {
   String? boardTitle;
-  String? boardBackgroundColor;
+  int? boardBackgroundColor;
 
   CraeteBoardModel({
     this.boardTitle,

@@ -1,7 +1,7 @@
 class BoardsModel {
   String uid;
   String? boardTitle;
-  String? boardBackgroundColor;
+  int? boardBackgroundColor;
 
   BoardsModel({
     required this.uid,
@@ -9,8 +9,15 @@ class BoardsModel {
     this.boardBackgroundColor,
   });
 
+  factory BoardsModel.fromJson(String id, Map<String, dynamic> json) =>
+      BoardsModel(
+        uid: id,
+        boardTitle: json['boardTitle'] as String,
+        boardBackgroundColor: json['boardBackgroundColor'] as int,
+      );
+
   Map<String, dynamic> toJson() => {
-    "boardTitle": boardTitle,
-    "boardBackgroundColor": boardBackgroundColor,
-  };
+        "boardTitle": boardTitle,
+        "boardBackgroundColor": boardBackgroundColor,
+      };
 }

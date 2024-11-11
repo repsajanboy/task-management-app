@@ -19,6 +19,11 @@ class MyApp extends StatelessWidget {
       child: MultiBlocProvider(
         providers: [
           BlocProvider(
+            create: (context) => BoardsListBloc(
+                boardsRepository: context.read<BoardsRepository>())
+              ..add(BoardsFetched()),
+          ),
+          BlocProvider(
             create: (context) => CreateBoardBloc(
                 boardsRepository: context.read<BoardsRepository>()),
           ),

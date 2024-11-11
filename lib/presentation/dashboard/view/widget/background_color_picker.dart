@@ -38,7 +38,7 @@ class BoardBackgroundPicker extends StatelessWidget {
                         .read<CreateBoardBloc>()
                         .add(CreateBoardBackgroundColorSelected(
                           boardBackgroundColor:
-                              boardBackgroundColors[index].toString(),
+                              boardBackgroundColors[index].value,
                           selectedBackgroundColorIndex: index
                         ));
                   },

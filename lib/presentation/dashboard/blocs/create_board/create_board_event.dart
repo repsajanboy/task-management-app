@@ -9,7 +9,7 @@ class CreateBoardTitleChanged extends CreateBoardEvent {
 }
 
 class CreateBoardBackgroundColorSelected extends CreateBoardEvent {
-  final String? boardBackgroundColor;
+  final int? boardBackgroundColor;
   final int? selectedBackgroundColorIndex;
 
   CreateBoardBackgroundColorSelected({
