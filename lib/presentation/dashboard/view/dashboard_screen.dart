@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_management_app/presentation/dashboard/dashboard.dart';
 import 'package:task_management_app/presentation/dashboard/view/widget/add_board_widget.dart';
 import 'package:task_management_app/presentation/dashboard/view/widget/greeting_message.dart';
+import 'package:task_management_app/routing/app_router_names.dart';
 import 'package:task_management_app/styles/colors.dart';
 
 int hexToInteger(String hex) => int.parse(hex, radix: 16);
@@ -120,55 +121,65 @@ class DashboardScreen extends StatelessWidget {
                   if (index == 0) {
                     return const AddBoardWidget();
                   } else {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.lightBlack,
-                        border: Border.all(color: Colors.white70),
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(8.0),
+                    return InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          RouteNames.board,
+                          arguments: state.boards[index - 1],
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.lightBlack,
+                          border: Border.all(color: Colors.white70),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(8.0),
+                          ),
                         ),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              padding:
-                                  const EdgeInsets.only(left: 8.0, top: 8.0),
-                              child: Text(
-                                state.boards[index - 1].boardTitle!,
-                                style: const TextStyle(
-                                  fontFamily: 'Chivo',
-                                  color: AppColors.mainTextColor,
-                                  fontSize: 18,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.only(left: 8.0, top: 8.0),
+                                child: Text(
+                                  state.boards[index - 1].boardTitle!,
+                                  style: const TextStyle(
+                                    fontFamily: 'Chivo',
+                                    color: AppColors.mainTextColor,
+                                    fontSize: 18,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Color(
-                                  state.boards[index - 1].boardBackgroundColor!,
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Color(
+                                    state.boards[index - 1]
+                                        .boardBackgroundColor!,
+                                  ),
+                                  borderRadius: const BorderRadius.only(
+                                    bottomLeft: Radius.circular(8.0),
+                                    bottomRight: Radius.circular(8.0),
+                                  ),
                                 ),
-                                borderRadius: const BorderRadius.only(
-                                  bottomLeft: Radius.circular(8.0),
-                                  bottomRight: Radius.circular(8.0),
-                                ),
-                              ),
-                              child: const Align(
-                                alignment: Alignment.centerRight,
-                                child: Icon(
-                                  Icons.chevron_right,
-                                  color: AppColors.mainTextColor,
-                                  size: 32.0,
+                                child: const Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Icon(
+                                    Icons.chevron_right,
+                                    color: AppColors.mainTextColor,
+                                    size: 32.0,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     );
                   }
