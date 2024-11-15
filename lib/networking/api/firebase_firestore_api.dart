@@ -8,8 +8,23 @@ class FirebaseFirestoreApi {
     return await boardsReference.doc().set(boards.toJson());
   }
 
-  Future<dynamic> getBoards () async {
+  Future<dynamic> getBoards() async {
     QuerySnapshot snapshot = await boardsReference.get();
     return snapshot.docs;
+  }
+
+  Future<dynamic> getBoardStatuses(String boardId) async {
+    QuerySnapshot snapshot =
+        await boardsReference.doc(boardId).collection('statuses').get();
+    return snapshot.docs;
+  }
+
+  Future<void> addBoardStatus(String boardId, String statusName) async {
+    final data = {"statusName": statusName};
+    return await boardsReference
+        .doc(boardId)
+        .collection('statuses')
+        .doc()
+        .set(data);
   }
 }

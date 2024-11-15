@@ -10,4 +10,7 @@ class AppColors {
   //Texts
   static const mainTextColor = Color(0xffDBD8E3);
 
+  //Borders & Cursor
+  static const mainBorderColor = Color(0xffDBD8E3);
+  static const mainCursorColor = Color(0xffDBD8E3);
 }
