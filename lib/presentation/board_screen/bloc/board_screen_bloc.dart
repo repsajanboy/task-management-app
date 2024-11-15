@@ -7,8 +7,16 @@ part 'board_screen_event.dart';
 part 'board_screen_state.dart';
 
 class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
-  BoardScreenBloc({required this.boardsRepository}) : super(const BoardScreenState()) {
+  BoardScreenBloc({required this.boardsRepository})
+      : super(const BoardScreenState()) {
     on<BoardStatusesFetched>(_fetchBoardStatuses);
+    on<StatusPageChanged>((event, emit) =>
+        emit(state.copyWith(currentIndex: event.currentIndex)));
+    on<AddStatusButtonClicked>((event, emit) => emit(state.copyWith(
+        addStatusTextBoxVisible: event.addStatusTextBoxVisible)));
+    on<AddStatusNameChanged>(
+        (event, emit) => emit(state.copyWith(statusName: event.statusName)));
+    on<AddButtonClicked>(_addStatus);
   }
 
   final BoardsRepository boardsRepository;
@@ -16,14 +24,29 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
   Future<void> _fetchBoardStatuses(
     BoardStatusesFetched event,
     Emitter<BoardScreenState> emit,
-  )  async {
+  ) async {
     try {
-    final statuses = await boardsRepository.getBoardStatuses(event.boardId!);
-    emit(state.copyWith(statuses: statuses));
-   }
-   on Exception catch (e) {
-    print(e.toString());
+      final statuses = await boardsRepository.getBoardStatuses(event.boardId!);
+      emit(state.copyWith(statuses: statuses));
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
 
-   }
+  Future<void> _addStatus(
+    AddButtonClicked event,
+    Emitter<BoardScreenState> emit,
+  ) async {
+    try {
+      await boardsRepository.addBoardStatus(event.boardId!, state.statusName!);
+      final statuses = await boardsRepository.getBoardStatuses(event.boardId!);
+      emit(state.copyWith(
+        statuses: statuses,
+        statusName: '',
+        addStatusTextBoxVisible: false,
+      ));
+    } on Exception catch (e) {
+      print(e.toString());
+    }
   }
 }

@@ -76,7 +76,7 @@ class DashboardScreen extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
       height: 100,
       decoration: BoxDecoration(
-        border: Border.all(color: AppColors.mainTextColor),
+        border: Border.all(color: AppColors.mainBorderColor),
       ),
       child: const Center(
         child: Text(
@@ -132,7 +132,7 @@ class DashboardScreen extends StatelessWidget {
                       child: Container(
                         decoration: BoxDecoration(
                           color: AppColors.lightBlack,
-                          border: Border.all(color: Colors.white70),
+                          border: Border.all(color: Colors.white70),//change border color
                           borderRadius: const BorderRadius.all(
                             Radius.circular(8.0),
                           ),

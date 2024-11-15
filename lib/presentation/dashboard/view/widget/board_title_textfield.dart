@@ -17,10 +17,9 @@ class BoardTitleWidget extends StatelessWidget {
               text: const TextSpan(
                 text: 'Board title ',
                 style: TextStyle(
-                  fontFamily: 'Montserrat',
-                  color: AppColors.mainTextColor,
-                  fontSize: 16.0
-                ),
+                    fontFamily: 'Montserrat',
+                    color: AppColors.mainTextColor,
+                    fontSize: 16.0),
                 children: [
                   TextSpan(
                     text: '*',
@@ -31,7 +30,7 @@ class BoardTitleWidget extends StatelessWidget {
             ),
             const SizedBox(height: 5.0),
             TextFormField(
-              cursorColor: AppColors.mainTextColor,
+              cursorColor: AppColors.mainCursorColor,
               autofocus: true,
               style: const TextStyle(
                 fontFamily: "Chivo",
@@ -39,10 +38,10 @@ class BoardTitleWidget extends StatelessWidget {
               ),
               decoration: const InputDecoration(
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.mainTextColor),
+                  borderSide: BorderSide(color: AppColors.mainBorderColor),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: AppColors.mainTextColor),
+                  borderSide: BorderSide(color: AppColors.mainBorderColor),
                 ),
               ),
               onChanged: (value) {

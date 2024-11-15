@@ -42,6 +42,7 @@ class BoardScreen extends StatelessWidget {
   Widget _bodyScreenBody() {
     return BlocBuilder<BoardScreenBloc, BoardScreenState>(
       builder: (context, state) {
+        final statuses = [...state.statuses, ""];
         return Container(
           margin: const EdgeInsets.only(bottom: 24.0),
           child: Column(
@@ -99,21 +100,33 @@ class BoardScreen extends StatelessWidget {
                     enableInfiniteScroll: false,
                     viewportFraction: 0.9,
                     disableCenter: true,
+                    onPageChanged: (index, reason) {
+                      context
+                          .read<BoardScreenBloc>()
+                          .add(StatusPageChanged(currentIndex: index));
+                    },
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: state.statuses.asMap().entries.map((entry) {
-                  return Container(
-                    width: 12.0,
-                    height: 12.0,
-                    margin: const EdgeInsets.symmetric(
-                        vertical: 8.0, horizontal: 4.0),
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.white),
+              BlocBuilder<BoardScreenBloc, BoardScreenState>(
+                builder: (context, state) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: statuses.asMap().entries.map((entry) {
+                      return Container(
+                        width: 12.0,
+                        height: 12.0,
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 4.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.white.withOpacity(
+                              entry.key == state.currentIndex ? 1.0 : 0.4),
+                        ),
+                      );
+                    }).toList(),
                   );
-                }).toList(),
+                },
               )
             ],
           ),
@@ -123,29 +136,115 @@ class BoardScreen extends StatelessWidget {
   }
 
   Widget addStatusWidget() {
-    return Container(
-      padding: const EdgeInsets.only(top: 24.0),
-      child: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: AppColors.lightBlack.withOpacity(.50),
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            child: TextButton(
-              onPressed: () {},
-              child: const Text(
-                'Add status',
-                style: TextStyle(
-                    fontFamily: 'Chivo',
-                    color: AppColors.mainTextColor,
-                    fontSize: 18),
+    return BlocBuilder<BoardScreenBloc, BoardScreenState>(
+      builder: (context, state) {
+        return Container(
+          padding: const EdgeInsets.only(top: 24.0),
+          child: Column(
+            children: [
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: state.addStatusTextBoxVisible
+                      ? Colors.black
+                      : AppColors.lightBlack.withOpacity(.50),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                child: Column(
+                  children: [
+                    Visibility(
+                      visible: !state.addStatusTextBoxVisible,
+                      child: TextButton(
+                        onPressed: () {
+                          context.read<BoardScreenBloc>().add(
+                              AddStatusButtonClicked(
+                                  addStatusTextBoxVisible: true));
+                        },
+                        child: const Text(
+                          'Add status',
+                          style: TextStyle(
+                            fontFamily: 'Chivo',
+                            color: AppColors.mainTextColor,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Visibility(
+                      visible: state.addStatusTextBoxVisible,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  context.read<BoardScreenBloc>().add(AddStatusNameChanged(statusName: ''));
+                                  context.read<BoardScreenBloc>().add(
+                                      AddStatusButtonClicked(
+                                          addStatusTextBoxVisible: false));
+                                },
+                                child: const Text(
+                                  'Cancel',
+                                  style: TextStyle(color: Colors.white54),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed:
+                                    (state.statusName ?? '').trim().isEmpty
+                                        ? null
+                                        : () {
+                                          context.read<BoardScreenBloc>().add(AddButtonClicked(boardId: board.uid));
+                                        },
+                                child: Text(
+                                  'Add',
+                                  style: TextStyle(
+                                    color:
+                                        (state.statusName ?? '').trim().isEmpty
+                                            ? Colors.white30
+                                            : Colors.blue,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: TextFormField(
+                              autofocus: true,
+                              cursorColor: AppColors.mainCursorColor,
+                              style: const TextStyle(
+                                fontFamily: 'Chivo',
+                                color: AppColors.mainTextColor,
+                              ),
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: AppColors.mainBorderColor,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: AppColors.mainBorderColor,
+                                  ),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                context.read<BoardScreenBloc>().add(
+                                    AddStatusNameChanged(statusName: value));
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

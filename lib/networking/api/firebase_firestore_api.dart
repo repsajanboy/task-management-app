@@ -18,4 +18,13 @@ class FirebaseFirestoreApi {
         await boardsReference.doc(boardId).collection('statuses').get();
     return snapshot.docs;
   }
+
+  Future<void> addBoardStatus(String boardId, String statusName) async {
+    final data = {"statusName": statusName};
+    return await boardsReference
+        .doc(boardId)
+        .collection('statuses')
+        .doc()
+        .set(data);
+  }
 }

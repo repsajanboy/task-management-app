@@ -23,4 +23,8 @@ class BoardsRepository {
       return StatusesModel.fromJson(e.id, e.data());
     }).toList();
   }
+
+  Future<void>  addBoardStatus(String boardId, String statusName) async {
+    await _firebaseFirestoreApi.addBoardStatus(boardId, statusName);
+  }
 }

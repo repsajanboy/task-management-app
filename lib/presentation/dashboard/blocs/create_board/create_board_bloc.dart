@@ -15,7 +15,7 @@ class CreateBoardBloc extends Bloc<CreateBoardEvent, CreateBoardState> {
         boardBackgroundColor: event.boardBackgroundColor,
         selectedBackgroundColorIndex: event.selectedBackgroundColorIndex)));
     on<RemoveCreateBoardSelectedBackgroundColorIndex>((event, emit) =>
-        emit(state.copyWith(selectedBackgroundColorIndex: 99)));
+        emit(state.copyWith(selectedBackgroundColorIndex: 99, boardTitle: '')));
     on<CreateBoardSaved>(_createBoard);
   }
 
