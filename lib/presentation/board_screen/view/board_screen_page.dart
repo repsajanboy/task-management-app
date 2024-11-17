@@ -77,9 +77,10 @@ class BoardScreen extends StatelessWidget {
                                       Text(
                                         state.statuses[index].statusName!,
                                         style: const TextStyle(
-                                          fontFamily: 'Chivo',
-                                          color: AppColors.mainTextColor,
-                                        ),
+                                            fontFamily: 'Chivo',
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0),
                                       ),
                                       const Icon(
                                         Icons.more_horiz_rounded,
@@ -87,6 +88,10 @@ class BoardScreen extends StatelessWidget {
                                       )
                                     ],
                                   ),
+                                  //Card space
+                                  const SizedBox(height: 10.0),
+                                  addCardWidget(
+                                      index, state.statuses[index].uid),
                                 ],
                               ),
                             ),
@@ -130,6 +135,116 @@ class BoardScreen extends StatelessWidget {
               )
             ],
           ),
+        );
+      },
+    );
+  }
+
+  Widget addCardWidget(int index, String statusId) {
+    return BlocBuilder<BoardScreenBloc, BoardScreenState>(
+      builder: (context, state) {
+        return Column(
+          children: [
+            Visibility(
+              visible: !state.addCardNameTextBoxVisible,
+              child: InkWell(
+                onTap: () {
+                  context.read<BoardScreenBloc>().add(AddCardButtonClicked(
+                      addCardNameTextBoxVisible: true,
+                      addCardNameSelectedIndex: index));
+                },
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.add,
+                      color: AppColors.mainTextColor,
+                      size: 18.0,
+                    ),
+                    Text(
+                      'Add card',
+                      style: TextStyle(
+                        fontFamily: 'Chivo',
+                        color: AppColors.mainTextColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Visibility(
+              visible: state.addCardNameTextBoxVisible &&
+                  state.addCardNameSelectedIndex == index,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextFormField(
+                      autofocus: true,
+                      cursorColor: AppColors.mainCursorColor,
+                      style: const TextStyle(
+                        fontFamily: 'Chivo',
+                        color: AppColors.mainTextColor,
+                      ),
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.mainBorderColor,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.mainBorderColor,
+                          ),
+                        ),
+                      ),
+                      onChanged: (value) {
+                        context
+                            .read<BoardScreenBloc>()
+                            .add(AddCardNameTextChanged(cardName: value));
+                      },
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          context
+                              .read<BoardScreenBloc>()
+                              .add(AddCardNameTextChanged(cardName: ''));
+                          context.read<BoardScreenBloc>().add(
+                              AddCardButtonClicked(
+                                  addCardNameTextBoxVisible: false));
+                        },
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.white54),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: (state.cardName ?? '').trim().isEmpty
+                            ? null
+                            : () {
+                                context.read<BoardScreenBloc>().add(
+                                    AddCardNameButtonClicked(
+                                        boardId: board.uid,
+                                        statusId: statusId));
+                              },
+                        child: Text(
+                          'Add',
+                          style: TextStyle(
+                            color: (state.cardName ?? '').trim().isEmpty
+                                ? Colors.white54
+                                : Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         );
       },
     );
@@ -179,7 +294,8 @@ class BoardScreen extends StatelessWidget {
                             children: [
                               TextButton(
                                 onPressed: () {
-                                  context.read<BoardScreenBloc>().add(AddStatusNameChanged(statusName: ''));
+                                  context.read<BoardScreenBloc>().add(
+                                      AddStatusNameChanged(statusName: ''));
                                   context.read<BoardScreenBloc>().add(
                                       AddStatusButtonClicked(
                                           addStatusTextBoxVisible: false));
@@ -194,8 +310,10 @@ class BoardScreen extends StatelessWidget {
                                     (state.statusName ?? '').trim().isEmpty
                                         ? null
                                         : () {
-                                          context.read<BoardScreenBloc>().add(AddButtonClicked(boardId: board.uid));
-                                        },
+                                            context.read<BoardScreenBloc>().add(
+                                                AddButtonClicked(
+                                                    boardId: board.uid));
+                                          },
                                 child: Text(
                                   'Add',
                                   style: TextStyle(

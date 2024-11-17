@@ -17,6 +17,12 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
     on<AddStatusNameChanged>(
         (event, emit) => emit(state.copyWith(statusName: event.statusName)));
     on<AddButtonClicked>(_addStatus);
+    on<AddCardButtonClicked>((event, emit) => emit(state.copyWith(
+        addCardNameTextBoxVisible: event.addCardNameTextBoxVisible,
+        addCardNameSelectedIndex: event.addCardNameSelectedIndex)));
+    on<AddCardNameTextChanged>(
+        (event, emit) => emit(state.copyWith(cardName: event.cardName)));
+    on<AddCardNameButtonClicked>(_addCardName);
   }
 
   final BoardsRepository boardsRepository;
@@ -48,5 +54,13 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
     } on Exception catch (e) {
       print(e.toString());
     }
+  }
+
+  Future<void> _addCardName(
+    AddCardNameButtonClicked event,
+    Emitter<BoardScreenState> emit,
+  ) async {
+    await boardsRepository.addCardName(event.boardId!, event.statusId!, state.cardName!);
+    emit(state.copyWith(cardName: '', addCardNameTextBoxVisible: false));
   }
 }

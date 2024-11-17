@@ -27,4 +27,16 @@ class FirebaseFirestoreApi {
         .doc()
         .set(data);
   }
+
+  Future<void> addCardName(
+      String boardId, String statusId, String cardName) async {
+    final data = {"cardName": cardName};
+    return await boardsReference
+        .doc(boardId)
+        .collection('statuses')
+        .doc(statusId)
+        .collection('cards')
+        .doc()
+        .set(data);
+  }
 }

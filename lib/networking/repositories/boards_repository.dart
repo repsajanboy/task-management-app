@@ -27,4 +27,8 @@ class BoardsRepository {
   Future<void>  addBoardStatus(String boardId, String statusName) async {
     await _firebaseFirestoreApi.addBoardStatus(boardId, statusName);
   }
+
+  Future<void> addCardName(String boardId, String statusId, String cardName) async {
+    await _firebaseFirestoreApi.addCardName(boardId, statusId, cardName);
+  }
 }
