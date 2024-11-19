@@ -101,11 +101,20 @@ class BoardScreen extends StatelessWidget {
                                             final cards =
                                                 state.statuses[index].cards;
                                             return Container(
-                                              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
-                                              margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 5.0),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                vertical: 8.0,
+                                                horizontal: 8.0,
+                                              ),
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 8.0,
+                                                vertical: 5.0,
+                                              ),
                                               decoration: const BoxDecoration(
                                                 color: AppColors.lightBlack,
-                                                borderRadius: BorderRadius.all(Radius.circular(6.0))
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(6.0)),
                                               ),
                                               child: Text(
                                                 cards![cardIndex].cardName!,
@@ -117,12 +126,11 @@ class BoardScreen extends StatelessWidget {
                                               ),
                                             );
                                           })
-                                      : const SizedBox(),
-                                  const SizedBox(height: 10.0),
+                                      : const SizedBox(height: 10),
                                   addCardWidget(
                                     index,
-                                    board.uid,
-                                    state.statuses[index].uid,
+                                    board.uid!,
+                                    state.statuses[index].uid!,
                                   ),
                                 ],
                               ),
@@ -131,7 +139,7 @@ class BoardScreen extends StatelessWidget {
                         ),
                       );
                     }
-                    return addStatusWidget(board.uid);
+                    return addStatusWidget(board.uid!);
                   },
                   options: CarouselOptions(
                     enableInfiniteScroll: false,

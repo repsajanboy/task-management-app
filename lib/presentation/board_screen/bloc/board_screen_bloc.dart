@@ -56,10 +56,18 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
     Emitter<BoardScreenState> emit,
   ) async {
     try {
-      await boardsRepository.addBoardStatus(event.boardId!, state.statusName!);
-      final statuses = await boardsRepository.getBoardStatuses(event.boardId!);
+      final statusId = await boardsRepository.addBoardStatus(
+        event.boardId!,
+        state.statusName!,
+      );
+      final newStatus = StatusesModel(
+        uid: statusId,
+        statusName: state.statusName!,
+        cards: [],
+      );
+
+      state.statuses.add(newStatus);
       emit(state.copyWith(
-        statuses: statuses,
         statusName: '',
         addStatusTextBoxVisible: false,
       ));
@@ -72,7 +80,18 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
     AddCardNameButtonClicked event,
     Emitter<BoardScreenState> emit,
   ) async {
-    await boardsRepository.addCardName(event.boardId!, event.statusId!, state.cardName!);
+    try {
+      final cardId = await boardsRepository.addCardName(
+        event.boardId!, event.statusId!, state.cardName!);
+    final cardName = CardsModel(uid: cardId, cardName: state.cardName);
+    state.statuses
+        .where((element) => element.uid == event.statusId)
+        .first
+        .cards!
+        .add(cardName);
     emit(state.copyWith(cardName: '', addCardNameTextBoxVisible: false));
+    } on Exception catch (e) {
+      print(e.toString());
+    }
   }
 }

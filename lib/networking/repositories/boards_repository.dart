@@ -42,12 +42,15 @@ class BoardsRepository {
     return data;
   }
 
-  Future<void> addBoardStatus(String boardId, String statusName) async {
-    await _firebaseFirestoreApi.addBoardStatus(boardId, statusName);
+  Future<String> addBoardStatus(String boardId, String statusName) async {
+    return await _firebaseFirestoreApi.addBoardStatus(boardId, statusName);
   }
 
-  Future<void> addCardName(
-      String boardId, String statusId, String cardName) async {
-    await _firebaseFirestoreApi.addCardName(boardId, statusId, cardName);
+  Future<String> addCardName(
+    String boardId,
+    String statusId,
+    String cardName,
+  ) async {
+    return await _firebaseFirestoreApi.addCardName(boardId, statusId, cardName);
   }
 }

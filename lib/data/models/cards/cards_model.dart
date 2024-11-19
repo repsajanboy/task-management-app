@@ -1,9 +1,9 @@
 class CardsModel {
-  String uid;
+  String? uid;
   String? cardName;
 
   CardsModel({
-    required this.uid,
+    this.uid,
     this.cardName,
   });
 

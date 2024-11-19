@@ -87,6 +87,8 @@ Widget addStatusWidget(String boardId) {
                               color: AppColors.mainTextColor,
                             ),
                             decoration: const InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.all(8),
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: AppColors.mainBorderColor,

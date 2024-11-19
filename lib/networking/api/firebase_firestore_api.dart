@@ -29,24 +29,26 @@ class FirebaseFirestoreApi {
     return snapshot.docs;
   }
 
-  Future<void> addBoardStatus(String boardId, String statusName) async {
+  Future<String> addBoardStatus(String boardId, String statusName) async {
     final data = {"statusName": statusName};
-    return await boardsReference
+    final statusRef =  await boardsReference
         .doc(boardId)
         .collection('statuses')
-        .doc()
-        .set(data);
+        .add(data);
+
+    return statusRef.id;
   }
 
-  Future<void> addCardName(
+  Future<String> addCardName(
       String boardId, String statusId, String cardName) async {
     final data = {"cardName": cardName};
-    return await boardsReference
+    final cardRef = await boardsReference
         .doc(boardId)
         .collection('statuses')
         .doc(statusId)
         .collection('cards')
-        .doc()
-        .set(data);
+        .add(data);
+
+    return cardRef.id;
   }
 }

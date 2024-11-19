@@ -1,10 +1,10 @@
 class BoardsModel {
-  String uid;
+  String? uid;
   String? boardTitle;
   int? boardBackgroundColor;
 
   BoardsModel({
-    required this.uid,
+    this.uid,
     this.boardTitle,
     this.boardBackgroundColor,
   });

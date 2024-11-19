@@ -1,12 +1,12 @@
 import 'package:task_management_app/data/models/cards/cards_model.dart';
 
 class StatusesModel {
-  String uid;
+  String? uid;
   String? statusName;
   List<CardsModel>? cards;
 
   StatusesModel({
-    required this.uid,
+    this.uid,
     this.statusName,
     this.cards
   });
