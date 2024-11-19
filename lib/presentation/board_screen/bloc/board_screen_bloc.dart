@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_management_app/data/models/boards/statuses_model.dart';
+import 'package:task_management_app/data/models/cards/cards_model.dart';
 import 'package:task_management_app/networking/repositories/repositories.dart';
 
 part 'board_screen_event.dart';
@@ -17,6 +18,13 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
     on<AddStatusNameChanged>(
         (event, emit) => emit(state.copyWith(statusName: event.statusName)));
     on<AddButtonClicked>(_addStatus);
+    on<AddCardButtonClicked>((event, emit) => emit(state.copyWith(
+        addCardNameTextBoxVisible: event.addCardNameTextBoxVisible,
+        addCardNameSelectedIndex: event.addCardNameSelectedIndex)));
+    on<AddCardNameTextChanged>(
+        (event, emit) => emit(state.copyWith(cardName: event.cardName)));
+    on<AddCardNameButtonClicked>(_addCardName);
+    //on<StatusCardsFetched>(_fetchCardsOnStatus);
   }
 
   final BoardsRepository boardsRepository;
@@ -33,18 +41,55 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
     }
   }
 
+  // Future<void> _fetchCardsOnStatus(
+  //   StatusCardsFetched event,
+  //   Emitter<BoardScreenState> emit,
+  // ) async {
+  //   state.statuses.forEach((status)  async {
+  //     final data = await boardsRepository.getStatusCards(event.boardId!, status.uid);
+  //     return data;
+  //   });
+  // }
+
   Future<void> _addStatus(
     AddButtonClicked event,
     Emitter<BoardScreenState> emit,
   ) async {
     try {
-      await boardsRepository.addBoardStatus(event.boardId!, state.statusName!);
-      final statuses = await boardsRepository.getBoardStatuses(event.boardId!);
+      final statusId = await boardsRepository.addBoardStatus(
+        event.boardId!,
+        state.statusName!,
+      );
+      final newStatus = StatusesModel(
+        uid: statusId,
+        statusName: state.statusName!,
+        cards: [],
+      );
+
+      state.statuses.add(newStatus);
       emit(state.copyWith(
-        statuses: statuses,
         statusName: '',
         addStatusTextBoxVisible: false,
       ));
+    } on Exception catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> _addCardName(
+    AddCardNameButtonClicked event,
+    Emitter<BoardScreenState> emit,
+  ) async {
+    try {
+      final cardId = await boardsRepository.addCardName(
+        event.boardId!, event.statusId!, state.cardName!);
+    final cardName = CardsModel(uid: cardId, cardName: state.cardName);
+    state.statuses
+        .where((element) => element.uid == event.statusId)
+        .first
+        .cards!
+        .add(cardName);
+    emit(state.copyWith(cardName: '', addCardNameTextBoxVisible: false));
     } on Exception catch (e) {
       print(e.toString());
     }

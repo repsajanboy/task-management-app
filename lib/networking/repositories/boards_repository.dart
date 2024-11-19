@@ -1,11 +1,12 @@
 import 'package:task_management_app/data/models/boards/boards_model.dart';
 import 'package:task_management_app/data/models/boards/create_board_model.dart';
 import 'package:task_management_app/data/models/boards/statuses_model.dart';
+import 'package:task_management_app/data/models/cards/cards_model.dart';
 import 'package:task_management_app/networking/api/firebase_firestore_api.dart';
 
 class BoardsRepository {
   final _firebaseFirestoreApi = FirebaseFirestoreApi();
-  
+
   Future<void> createBoard(CraeteBoardModel board) async {
     await _firebaseFirestoreApi.createNewBoard(board);
   }
@@ -19,12 +20,37 @@ class BoardsRepository {
 
   Future<List<StatusesModel>> getBoardStatuses(String boardId) async {
     final data = await _firebaseFirestoreApi.getBoardStatuses(boardId) as List;
-    return data.map((e) {
-      return StatusesModel.fromJson(e.id, e.data());
-    }).toList();
+    final List<StatusesModel> statuses = [];
+    for (int i = 0; i < data.length; i++) {
+      final status = data[i].data();
+      final cards = await _firebaseFirestoreApi.getStatusCards(
+          boardId, data[i].id) as List;
+      statuses.add(StatusesModel(
+        uid: data[i].id,
+        statusName: status['statusName'],
+        cards: cards.map((e) {
+          return CardsModel.fromJson(e.id, e.data());
+        }).toList(),
+      ));
+    }
+    return statuses;
   }
 
-  Future<void>  addBoardStatus(String boardId, String statusName) async {
-    await _firebaseFirestoreApi.addBoardStatus(boardId, statusName);
+  Future<dynamic> getStatusCards(String boardId, String statusId) async {
+    final data =
+        await _firebaseFirestoreApi.getStatusCards(boardId, statusId) as List;
+    return data;
+  }
+
+  Future<String> addBoardStatus(String boardId, String statusName) async {
+    return await _firebaseFirestoreApi.addBoardStatus(boardId, statusName);
+  }
+
+  Future<String> addCardName(
+    String boardId,
+    String statusId,
+    String cardName,
+  ) async {
+    return await _firebaseFirestoreApi.addCardName(boardId, statusId, cardName);
   }
 }

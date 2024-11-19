@@ -6,6 +6,9 @@ import 'package:task_management_app/networking/repositories/repositories.dart';
 import 'package:task_management_app/presentation/board_screen/board_screen.dart';
 import 'package:task_management_app/styles/colors.dart';
 
+import 'widgets/add_card_widget.dart';
+import 'widgets/add_status_widget.dart';
+
 class BoardScreen extends StatelessWidget {
   BoardScreen({super.key, required this.board});
 
@@ -77,15 +80,57 @@ class BoardScreen extends StatelessWidget {
                                       Text(
                                         state.statuses[index].statusName!,
                                         style: const TextStyle(
-                                          fontFamily: 'Chivo',
-                                          color: AppColors.mainTextColor,
-                                        ),
+                                            fontFamily: 'Chivo',
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16.0),
                                       ),
                                       const Icon(
                                         Icons.more_horiz_rounded,
                                         color: AppColors.mainTextColor,
                                       )
                                     ],
+                                  ),
+                                  state.statuses[index].cards!.length > 1
+                                      ? ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: state
+                                              .statuses[index].cards!.length,
+                                          itemBuilder: (BuildContext context,
+                                              int cardIndex) {
+                                            final cards =
+                                                state.statuses[index].cards;
+                                            return Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                vertical: 8.0,
+                                                horizontal: 8.0,
+                                              ),
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                horizontal: 8.0,
+                                                vertical: 5.0,
+                                              ),
+                                              decoration: const BoxDecoration(
+                                                color: AppColors.lightBlack,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(6.0)),
+                                              ),
+                                              child: Text(
+                                                cards![cardIndex].cardName!,
+                                                style: const TextStyle(
+                                                  fontFamily: 'Chivo',
+                                                  color:
+                                                      AppColors.mainTextColor,
+                                                ),
+                                              ),
+                                            );
+                                          })
+                                      : const SizedBox(height: 10),
+                                  addCardWidget(
+                                    index,
+                                    board.uid!,
+                                    state.statuses[index].uid!,
                                   ),
                                 ],
                               ),
@@ -94,7 +139,7 @@ class BoardScreen extends StatelessWidget {
                         ),
                       );
                     }
-                    return addStatusWidget();
+                    return addStatusWidget(board.uid!);
                   },
                   options: CarouselOptions(
                     enableInfiniteScroll: false,
@@ -128,119 +173,6 @@ class BoardScreen extends StatelessWidget {
                   );
                 },
               )
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  Widget addStatusWidget() {
-    return BlocBuilder<BoardScreenBloc, BoardScreenState>(
-      builder: (context, state) {
-        return Container(
-          padding: const EdgeInsets.only(top: 24.0),
-          child: Column(
-            children: [
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: state.addStatusTextBoxVisible
-                      ? Colors.black
-                      : AppColors.lightBlack.withOpacity(.50),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                  children: [
-                    Visibility(
-                      visible: !state.addStatusTextBoxVisible,
-                      child: TextButton(
-                        onPressed: () {
-                          context.read<BoardScreenBloc>().add(
-                              AddStatusButtonClicked(
-                                  addStatusTextBoxVisible: true));
-                        },
-                        child: const Text(
-                          'Add status',
-                          style: TextStyle(
-                            fontFamily: 'Chivo',
-                            color: AppColors.mainTextColor,
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Visibility(
-                      visible: state.addStatusTextBoxVisible,
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextButton(
-                                onPressed: () {
-                                  context.read<BoardScreenBloc>().add(AddStatusNameChanged(statusName: ''));
-                                  context.read<BoardScreenBloc>().add(
-                                      AddStatusButtonClicked(
-                                          addStatusTextBoxVisible: false));
-                                },
-                                child: const Text(
-                                  'Cancel',
-                                  style: TextStyle(color: Colors.white54),
-                                ),
-                              ),
-                              TextButton(
-                                onPressed:
-                                    (state.statusName ?? '').trim().isEmpty
-                                        ? null
-                                        : () {
-                                          context.read<BoardScreenBloc>().add(AddButtonClicked(boardId: board.uid));
-                                        },
-                                child: Text(
-                                  'Add',
-                                  style: TextStyle(
-                                    color:
-                                        (state.statusName ?? '').trim().isEmpty
-                                            ? Colors.white30
-                                            : Colors.blue,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: TextFormField(
-                              autofocus: true,
-                              cursorColor: AppColors.mainCursorColor,
-                              style: const TextStyle(
-                                fontFamily: 'Chivo',
-                                color: AppColors.mainTextColor,
-                              ),
-                              decoration: const InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: AppColors.mainBorderColor,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: AppColors.mainBorderColor,
-                                  ),
-                                ),
-                              ),
-                              onChanged: (value) {
-                                context.read<BoardScreenBloc>().add(
-                                    AddStatusNameChanged(statusName: value));
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
             ],
           ),
         );
