@@ -2,6 +2,7 @@ part of 'board_screen_bloc.dart';
 
 class BoardScreenState extends Equatable {
   final List<StatusesModel> statuses;
+  final List<CardsModel> cards;
   final int currentIndex;
   final bool addStatusTextBoxVisible;
   final bool addCardNameTextBoxVisible;
@@ -11,6 +12,7 @@ class BoardScreenState extends Equatable {
 
   const BoardScreenState({
     this.statuses = const <StatusesModel>[],
+    this.cards = const <CardsModel>[],
     this.currentIndex = 0,
     this.addStatusTextBoxVisible = false,
     this.addCardNameTextBoxVisible = false,
@@ -21,6 +23,7 @@ class BoardScreenState extends Equatable {
 
   BoardScreenState copyWith({
     List<StatusesModel>? statuses,
+    List<CardsModel>? cards,
     int? currentIndex,
     bool? addStatusTextBoxVisible,
     bool? addCardNameTextBoxVisible,
@@ -30,6 +33,7 @@ class BoardScreenState extends Equatable {
   }) {
     return BoardScreenState(
       statuses: statuses ?? this.statuses,
+      cards: cards ?? this.cards,
       currentIndex: currentIndex ?? this.currentIndex,
       addStatusTextBoxVisible:
           addStatusTextBoxVisible ?? this.addStatusTextBoxVisible,
@@ -43,6 +47,7 @@ class BoardScreenState extends Equatable {
   @override
   List<Object?> get props => [
         statuses,
+        cards,
         currentIndex,
         addStatusTextBoxVisible,
         addCardNameTextBoxVisible,

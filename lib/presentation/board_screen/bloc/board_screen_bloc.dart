@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_management_app/data/models/boards/statuses_model.dart';
+import 'package:task_management_app/data/models/cards/cards_model.dart';
 import 'package:task_management_app/networking/repositories/repositories.dart';
 
 part 'board_screen_event.dart';
@@ -23,6 +24,7 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
     on<AddCardNameTextChanged>(
         (event, emit) => emit(state.copyWith(cardName: event.cardName)));
     on<AddCardNameButtonClicked>(_addCardName);
+    //on<StatusCardsFetched>(_fetchCardsOnStatus);
   }
 
   final BoardsRepository boardsRepository;
@@ -38,6 +40,16 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
       print(e.toString());
     }
   }
+
+  // Future<void> _fetchCardsOnStatus(
+  //   StatusCardsFetched event,
+  //   Emitter<BoardScreenState> emit,
+  // ) async {
+  //   state.statuses.forEach((status)  async {
+  //     final data = await boardsRepository.getStatusCards(event.boardId!, status.uid);
+  //     return data;
+  //   });
+  // }
 
   Future<void> _addStatus(
     AddButtonClicked event,

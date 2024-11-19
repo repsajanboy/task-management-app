@@ -19,6 +19,16 @@ class FirebaseFirestoreApi {
     return snapshot.docs;
   }
 
+  Future<dynamic> getStatusCards(String boardId, String statusId) async {
+    QuerySnapshot snapshot = await boardsReference
+        .doc(boardId)
+        .collection('statuses')
+        .doc(statusId)
+        .collection('cards')
+        .get();
+    return snapshot.docs;
+  }
+
   Future<void> addBoardStatus(String boardId, String statusName) async {
     final data = {"statusName": statusName};
     return await boardsReference

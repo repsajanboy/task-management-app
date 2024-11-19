@@ -8,6 +8,12 @@ class BoardStatusesFetched extends BoardScreenEvent {
   BoardStatusesFetched({this.boardId});
 }
 
+class StatusCardsFetched extends BoardScreenEvent {
+  final String? boardId;
+
+  StatusCardsFetched({this.boardId});
+}
+
 class StatusPageChanged extends BoardScreenEvent {
   final int? currentIndex;
 
