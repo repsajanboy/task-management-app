@@ -8,7 +8,7 @@ class BoardTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CreateBoardBloc, CreateBoardState>(
+    return BlocBuilder<BoardsListBloc, BoardsListState>(
       builder: (context, state) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +46,7 @@ class BoardTitleWidget extends StatelessWidget {
               ),
               onChanged: (value) {
                 context
-                    .read<CreateBoardBloc>()
+                    .read<BoardsListBloc>()
                     .add(CreateBoardTitleChanged(boardTitle: value));
               },
             ),

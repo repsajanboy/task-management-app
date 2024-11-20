@@ -56,7 +56,7 @@ class BoardScreen extends StatelessWidget {
                   itemCount: state.statuses.length + 1,
                   itemBuilder:
                       (BuildContext context, int index, int pageViewIndex) {
-                    if (index < state.statuses.length) {
+                    if (pageViewIndex < state.statuses.length) {
                       return Container(
                         padding: const EdgeInsets.only(
                             top: 24.0, left: 4.0, right: 4.0),
@@ -91,13 +91,13 @@ class BoardScreen extends StatelessWidget {
                                       )
                                     ],
                                   ),
-                                  state.statuses[index].cards!.length > 1
+                                  state.statuses[pageViewIndex].cards!.isNotEmpty
                                       ? ListView.builder(
                                           shrinkWrap: true,
                                           itemCount: state
-                                              .statuses[index].cards!.length,
+                                              .statuses[pageViewIndex].cards!.length,
                                           itemBuilder: (BuildContext context,
-                                              int cardIndex) {
+                                              int cardListIndex) {
                                             final cards =
                                                 state.statuses[index].cards;
                                             return Container(
@@ -117,7 +117,7 @@ class BoardScreen extends StatelessWidget {
                                                     Radius.circular(6.0)),
                                               ),
                                               child: Text(
-                                                cards![cardIndex].cardName!,
+                                                cards![cardListIndex].cardName!,
                                                 style: const TextStyle(
                                                   fontFamily: 'Chivo',
                                                   color:

@@ -23,10 +23,6 @@ class MyApp extends StatelessWidget {
                 boardsRepository: context.read<BoardsRepository>())
               ..add(BoardsFetched()),
           ),
-          BlocProvider(
-            create: (context) => CreateBoardBloc(
-                boardsRepository: context.read<BoardsRepository>()),
-          ),
         ],
         child: MaterialApp(
           title: 'Task Management App',

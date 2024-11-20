@@ -96,11 +96,11 @@ class AddBoardWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          BlocBuilder<CreateBoardBloc, CreateBoardState>(
+          BlocBuilder<BoardsListBloc, BoardsListState>(
             builder: (context, state) {
               return IconButton(
                 onPressed: () {
-                  context.read<CreateBoardBloc>().add(RemoveCreateBoardSelectedBackgroundColorIndex());
+                  context.read<BoardsListBloc>().add(RemoveCreateBoardSelectedBackgroundColorIndex());
                   Navigator.pop(context);
                 } ,
                 icon: const Icon(Icons.close),
@@ -116,13 +116,13 @@ class AddBoardWidget extends StatelessWidget {
                 fontSize: 18.0,
                 fontWeight: FontWeight.w700),
           ),
-          BlocBuilder<CreateBoardBloc, CreateBoardState>(
+          BlocBuilder<BoardsListBloc, BoardsListState>(
             builder: (context, state) {
               return IconButton(
                 onPressed: (state.boardTitle ?? '').trim().isEmpty
                     ? null
                     : () {
-                        context.read<CreateBoardBloc>().add(CreateBoardSaved());
+                        context.read<BoardsListBloc>().add(CreateBoardSaved());
                         Navigator.pop(context);
                       },
                 disabledColor: Colors.white54,
