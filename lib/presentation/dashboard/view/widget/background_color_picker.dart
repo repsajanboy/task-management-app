@@ -30,16 +30,16 @@ class BoardBackgroundPicker extends StatelessWidget {
           shrinkWrap: true,
           itemCount: boardBackgroundColors.length,
           itemBuilder: (context, index) {
-            return BlocBuilder<CreateBoardBloc, CreateBoardState>(
+            return BlocBuilder<BoardsListBloc, BoardsListState>(
               builder: (context, state) {
                 return InkWell(
                   onTap: () {
                     context
-                        .read<CreateBoardBloc>()
+                        .read<BoardsListBloc>()
                         .add(CreateBoardBackgroundColorSelected(
                           boardBackgroundColor:
                               boardBackgroundColors[index].value,
-                          selectedBackgroundColorIndex: index
+                          selectedBackgroundColorIndex: index,
                         ));
                   },
                   child: Container(

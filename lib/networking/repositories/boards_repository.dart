@@ -7,7 +7,7 @@ import 'package:task_management_app/networking/api/firebase_firestore_api.dart';
 class BoardsRepository {
   final _firebaseFirestoreApi = FirebaseFirestoreApi();
 
-  Future<void> createBoard(CraeteBoardModel board) async {
+  Future<void> createBoard(CreateBoardModel board) async {
     await _firebaseFirestoreApi.createNewBoard(board);
   }
 
@@ -28,6 +28,7 @@ class BoardsRepository {
       statuses.add(StatusesModel(
         uid: data[i].id,
         statusName: status['statusName'],
+        statusIndex: status['cardIndex'],
         cards: cards.map((e) {
           return CardsModel.fromJson(e.id, e.data());
         }).toList(),
@@ -42,15 +43,15 @@ class BoardsRepository {
     return data;
   }
 
-  Future<String> addBoardStatus(String boardId, String statusName) async {
-    return await _firebaseFirestoreApi.addBoardStatus(boardId, statusName);
+  Future<String> addBoardStatus(String boardId, StatusesModel status) async {
+    return await _firebaseFirestoreApi.addBoardStatus(boardId, status);
   }
 
   Future<String> addCardName(
     String boardId,
     String statusId,
-    String cardName,
+    CardsModel card,
   ) async {
-    return await _firebaseFirestoreApi.addCardName(boardId, statusId, cardName);
+    return await _firebaseFirestoreApi.addCardName(boardId, statusId, card);
   }
 }
