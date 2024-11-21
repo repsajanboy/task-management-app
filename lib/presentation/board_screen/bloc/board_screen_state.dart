@@ -9,6 +9,7 @@ class BoardScreenState extends Equatable {
   final String? statusName;
   final int? addCardNameSelectedIndex;
   final String? cardName;
+  final bool? isFetchingStatuses;
 
   const BoardScreenState({
     this.statuses = const <StatusesModel>[],
@@ -19,6 +20,7 @@ class BoardScreenState extends Equatable {
     this.statusName,
     this.addCardNameSelectedIndex,
     this.cardName,
+    this.isFetchingStatuses = true,
   });
 
   BoardScreenState copyWith({
@@ -30,6 +32,7 @@ class BoardScreenState extends Equatable {
     String? statusName,
     int? addCardNameSelectedIndex,
     String? cardName,
+    bool? isFetchingStatuses,
   }) {
     return BoardScreenState(
       statuses: statuses ?? this.statuses,
@@ -41,6 +44,7 @@ class BoardScreenState extends Equatable {
       statusName: statusName ?? this.statusName,
       addCardNameSelectedIndex: addCardNameSelectedIndex ?? this.addCardNameSelectedIndex,
       cardName: cardName ?? this.cardName,
+      isFetchingStatuses: isFetchingStatuses ?? this.isFetchingStatuses,
     );
   }
 
@@ -54,5 +58,6 @@ class BoardScreenState extends Equatable {
         statusName,
         addCardNameSelectedIndex,
         cardName,
+        isFetchingStatuses,
       ];
 }

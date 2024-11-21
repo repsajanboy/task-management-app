@@ -46,136 +46,149 @@ class BoardScreen extends StatelessWidget {
     return BlocBuilder<BoardScreenBloc, BoardScreenState>(
       builder: (context, state) {
         final statuses = [...state.statuses, ""];
-        return Container(
-          margin: const EdgeInsets.only(bottom: 24.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: CarouselSlider.builder(
-                  carouselController: _controller,
-                  itemCount: state.statuses.length + 1,
-                  itemBuilder:
-                      (BuildContext context, int index, int pageViewIndex) {
-                    if (pageViewIndex < state.statuses.length) {
-                      return Container(
-                        padding: const EdgeInsets.only(
-                            top: 24.0, left: 4.0, right: 4.0),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.all(8.0),
-                              width: double.infinity,
-                              decoration: const BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(8.0),
+        if (state.isFetchingStatuses!) {
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Colors.white,
+            ),
+          );
+        } else {
+          return Container(
+            margin: const EdgeInsets.only(bottom: 24.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: CarouselSlider.builder(
+                    carouselController: _controller,
+                    itemCount: state.statuses.length + 1,
+                    itemBuilder:
+                        (BuildContext context, int index, int pageViewIndex) {
+                      if (pageViewIndex < state.statuses.length) {
+                        return Container(
+                          padding: const EdgeInsets.only(
+                              top: 24.0, left: 4.0, right: 4.0),
+                          child: Column(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.all(8.0),
+                                width: double.infinity,
+                                decoration: const BoxDecoration(
+                                  color: Colors.black,
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(8.0),
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          state.statuses[index].statusName!,
+                                          style: const TextStyle(
+                                              fontFamily: 'Chivo',
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16.0),
+                                        ),
+                                        const Icon(
+                                          Icons.more_horiz_rounded,
+                                          color: AppColors.mainTextColor,
+                                        )
+                                      ],
+                                    ),
+                                    state.statuses[pageViewIndex].cards!
+                                            .isNotEmpty
+                                        ? ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: state
+                                                .statuses[pageViewIndex]
+                                                .cards!
+                                                .length,
+                                            itemBuilder: (BuildContext context,
+                                                int cardListIndex) {
+                                              final cards =
+                                                  state.statuses[index].cards;
+                                              return Container(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  vertical: 8.0,
+                                                  horizontal: 8.0,
+                                                ),
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 8.0,
+                                                  vertical: 5.0,
+                                                ),
+                                                decoration: const BoxDecoration(
+                                                  color: AppColors.lightBlack,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(6.0)),
+                                                ),
+                                                child: Text(
+                                                  cards![cardListIndex]
+                                                      .cardName!,
+                                                  style: const TextStyle(
+                                                    fontFamily: 'Chivo',
+                                                    color:
+                                                        AppColors.mainTextColor,
+                                                  ),
+                                                ),
+                                              );
+                                            })
+                                        : const SizedBox(height: 10),
+                                    addCardWidget(
+                                      index,
+                                      board.uid!,
+                                      state.statuses[index].uid!,
+                                    ),
+                                  ],
                                 ),
                               ),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        state.statuses[index].statusName!,
-                                        style: const TextStyle(
-                                            fontFamily: 'Chivo',
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16.0),
-                                      ),
-                                      const Icon(
-                                        Icons.more_horiz_rounded,
-                                        color: AppColors.mainTextColor,
-                                      )
-                                    ],
-                                  ),
-                                  state.statuses[pageViewIndex].cards!.isNotEmpty
-                                      ? ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: state
-                                              .statuses[pageViewIndex].cards!.length,
-                                          itemBuilder: (BuildContext context,
-                                              int cardListIndex) {
-                                            final cards =
-                                                state.statuses[index].cards;
-                                            return Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical: 8.0,
-                                                horizontal: 8.0,
-                                              ),
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                horizontal: 8.0,
-                                                vertical: 5.0,
-                                              ),
-                                              decoration: const BoxDecoration(
-                                                color: AppColors.lightBlack,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(6.0)),
-                                              ),
-                                              child: Text(
-                                                cards![cardListIndex].cardName!,
-                                                style: const TextStyle(
-                                                  fontFamily: 'Chivo',
-                                                  color:
-                                                      AppColors.mainTextColor,
-                                                ),
-                                              ),
-                                            );
-                                          })
-                                      : const SizedBox(height: 10),
-                                  addCardWidget(
-                                    index,
-                                    board.uid!,
-                                    state.statuses[index].uid!,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-                    return addStatusWidget(board.uid!);
-                  },
-                  options: CarouselOptions(
-                    enableInfiniteScroll: false,
-                    viewportFraction: 0.9,
-                    disableCenter: true,
-                    onPageChanged: (index, reason) {
-                      context
-                          .read<BoardScreenBloc>()
-                          .add(StatusPageChanged(currentIndex: index));
+                            ],
+                          ),
+                        );
+                      }
+                      return addStatusWidget(board.uid!);
                     },
+                    options: CarouselOptions(
+                      enableInfiniteScroll: false,
+                      viewportFraction: 0.9,
+                      disableCenter: true,
+                      onPageChanged: (index, reason) {
+                        context
+                            .read<BoardScreenBloc>()
+                            .add(StatusPageChanged(currentIndex: index));
+                      },
+                    ),
                   ),
                 ),
-              ),
-              BlocBuilder<BoardScreenBloc, BoardScreenState>(
-                builder: (context, state) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: statuses.asMap().entries.map((entry) {
-                      return Container(
-                        width: 12.0,
-                        height: 12.0,
-                        margin: const EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 4.0),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white.withOpacity(
-                              entry.key == state.currentIndex ? 1.0 : 0.4),
-                        ),
-                      );
-                    }).toList(),
-                  );
-                },
-              )
-            ],
-          ),
-        );
+                BlocBuilder<BoardScreenBloc, BoardScreenState>(
+                  builder: (context, state) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: statuses.asMap().entries.map((entry) {
+                        return Container(
+                          width: 12.0,
+                          height: 12.0,
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 8.0, horizontal: 4.0),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white.withOpacity(
+                                entry.key == state.currentIndex ? 1.0 : 0.4),
+                          ),
+                        );
+                      }).toList(),
+                    );
+                  },
+                )
+              ],
+            ),
+          );
+        }
       },
     );
   }
