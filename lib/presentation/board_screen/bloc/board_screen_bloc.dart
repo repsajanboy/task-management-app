@@ -34,8 +34,9 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
     Emitter<BoardScreenState> emit,
   ) async {
     try {
+      emit(state.copyWith(isFetchingStatuses: true));
       final statuses = await boardsRepository.getBoardStatuses(event.boardId!);
-      emit(state.copyWith(statuses: statuses));
+      emit(state.copyWith(statuses: statuses, isFetchingStatuses: false));
     } on Exception catch (e) {
       print(e.toString());
     }
