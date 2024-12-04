@@ -68,4 +68,15 @@ class FirebaseFirestoreApi {
 
     return cardRef.id;
   }
+
+  Future<void> updateCardDetails(
+      String boardId, String statusId, CardsModel card) async {
+    return await boardsReference
+        .doc(boardId)
+        .collection('statuses')
+        .doc(statusId)
+        .collection('cards')
+        .doc(card.uid!)
+        .update(card.toJson());
+  }
 }

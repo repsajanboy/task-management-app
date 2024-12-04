@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_management_app/data/models/boards/statuses_model.dart';
@@ -87,6 +89,9 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
       final card = CardsModel(
         cardName: state.cardName,
         description: '',
+        startDate: null,
+        dueDate: null,
+        priority: null,
         cardIndex: state.statuses
                 .where((e) => e.uid == event.statusId)
                 .first
