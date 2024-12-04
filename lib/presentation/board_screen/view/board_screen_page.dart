@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_management_app/data/models/boards/boards_model.dart';
 import 'package:task_management_app/networking/repositories/repositories.dart';
 import 'package:task_management_app/presentation/board_screen/board_screen.dart';
+import 'package:task_management_app/routing/app_router_names.dart';
 import 'package:task_management_app/styles/colors.dart';
 
 import 'widgets/add_card_widget.dart';
@@ -98,19 +99,33 @@ class BoardScreen extends StatelessWidget {
                                         )
                                       ],
                                     ),
-                                    state.statuses[pageViewIndex].cards!
-                                            .isNotEmpty
-                                        ? ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: state
-                                                .statuses[pageViewIndex]
-                                                .cards!
-                                                .length,
-                                            itemBuilder: (BuildContext context,
-                                                int cardListIndex) {
-                                              final cards =
-                                                  state.statuses[index].cards;
-                                              return Container(
+                                    if (state.statuses[pageViewIndex].cards!
+                                        .isNotEmpty)
+                                      ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: state
+                                              .statuses[pageViewIndex]
+                                              .cards!
+                                              .length,
+                                          itemBuilder: (BuildContext context,
+                                              int cardListIndex) {
+                                            final cards =
+                                                state.statuses[index].cards;
+                                            return InkWell(
+                                              onTap: () {
+                                                final arguments = {
+                                                  'card': cards[cardListIndex],
+                                                  'boardId': board.uid,
+                                                  'statusId':
+                                                      state.statuses[index].uid,
+                                                };
+                                                Navigator.pushNamed(
+                                                  context,
+                                                  RouteNames.editCard,
+                                                  arguments: arguments,
+                                                );
+                                              },
+                                              child: Container(
                                                 padding:
                                                     const EdgeInsets.symmetric(
                                                   vertical: 8.0,
@@ -136,9 +151,11 @@ class BoardScreen extends StatelessWidget {
                                                         AppColors.mainTextColor,
                                                   ),
                                                 ),
-                                              );
-                                            })
-                                        : const SizedBox(height: 10),
+                                              ),
+                                            );
+                                          })
+                                    else
+                                      const SizedBox(height: 10),
                                     addCardWidget(
                                       index,
                                       board.uid!,
