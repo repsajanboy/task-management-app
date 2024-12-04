@@ -32,7 +32,7 @@ class CardEditScreen extends StatelessWidget {
           backgroundColor: AppColors.lightBlack,
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.of(context).pop(false);
             },
             icon: const Icon(
               Icons.close,
@@ -47,7 +47,7 @@ class CardEditScreen extends StatelessWidget {
                       ? () {
                           context.read<CardEditBloc>().add(CardEditSaved(
                               boardId: boardId, statusId: statusId));
-                          Navigator.pop(context);
+                          Navigator.of(context).pop(true);
                         }
                       : null,
                   child: Text(

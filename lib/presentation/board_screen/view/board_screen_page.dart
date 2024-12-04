@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_management_app/data/models/boards/boards_model.dart';
+import 'package:task_management_app/data/models/cards/card_priority_model.dart';
 import 'package:task_management_app/networking/repositories/repositories.dart';
 import 'package:task_management_app/presentation/board_screen/board_screen.dart';
 import 'package:task_management_app/routing/app_router_names.dart';
@@ -112,18 +113,23 @@ class BoardScreen extends StatelessWidget {
                                             final cards =
                                                 state.statuses[index].cards;
                                             return InkWell(
-                                              onTap: () {
+                                              onTap: () async {
                                                 final arguments = {
                                                   'card': cards[cardListIndex],
                                                   'boardId': board.uid,
                                                   'statusId':
                                                       state.statuses[index].uid,
                                                 };
-                                                Navigator.pushNamed(
+                                                final isSaved = await Navigator.pushNamed(
                                                   context,
                                                   RouteNames.editCard,
                                                   arguments: arguments,
                                                 );
+                                                if(isSaved == true) {
+                                                  if(!context.mounted) return;
+                                                  BlocProvider.of<BoardScreenBloc>(context).add(BoardStatusesFetched(boardId: board.uid));
+                                                }
+
                                               },
                                               child: Container(
                                                 padding:
@@ -142,14 +148,31 @@ class BoardScreen extends StatelessWidget {
                                                       BorderRadius.all(
                                                           Radius.circular(6.0)),
                                                 ),
-                                                child: Text(
-                                                  cards![cardListIndex]
-                                                      .cardName!,
-                                                  style: const TextStyle(
-                                                    fontFamily: 'Chivo',
-                                                    color:
-                                                        AppColors.mainTextColor,
-                                                  ),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      cards![cardListIndex]
+                                                          .cardName!,
+                                                      style: const TextStyle(
+                                                        fontFamily: 'Chivo',
+                                                        color: AppColors
+                                                            .mainTextColor,
+                                                      ),
+                                                    ),
+                                                    Visibility(
+                                                      visible:
+                                                          cards[cardListIndex]
+                                                                  .priority != null,
+                                                      child: cards[cardListIndex]
+                                                                  .priority != null ? cardPriorityList[
+                                                              cards[cardListIndex]
+                                                                      .priority! -
+                                                                  1]
+                                                          .icon! : const SizedBox(),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             );
