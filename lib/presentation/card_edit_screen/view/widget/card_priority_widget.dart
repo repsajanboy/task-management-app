@@ -13,11 +13,11 @@ Widget cardPriorityWidget(CardsModel card) {
       child: BlocBuilder<CardEditBloc, CardEditState>(
         builder: (context, state) {
           return DropdownMenu<CardPriority>(
-            initialSelection: cardPriorityList[card.priority! - 1],
+            initialSelection: card.priority == null ? null : cardPriorityList[card.priority! - 1],
             width: double.infinity,
             trailingIcon: const SizedBox(),
             selectedTrailingIcon: const SizedBox(),
-            leadingIcon: card.priority != 0
+            leadingIcon: card.priority != null
                 ? cardPriorityList[card.priority! - 1].icon
                 : state.priorityIndex == 0
                     ? const Icon(Icons.priority_high, color: Colors.white70)

@@ -63,3 +63,19 @@ class AddCardNameButtonClicked extends BoardScreenEvent {
     this.statusId,
   });
 }
+
+class CardIndexReordered extends BoardScreenEvent {
+  final int? oldIndex;
+  final int? newIndex;
+  final String? boardId;
+  final String? statusId;
+  final bool? isGreater;
+
+  CardIndexReordered({
+    this.oldIndex,
+    this.newIndex,
+    this.boardId,
+    this.statusId,
+    this.isGreater,
+  });
+}
