@@ -2,10 +2,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_management_app/data/models/boards/boards_model.dart';
-import 'package:task_management_app/data/models/cards/card_priority_model.dart';
 import 'package:task_management_app/networking/repositories/repositories.dart';
 import 'package:task_management_app/presentation/board_screen/board_screen.dart';
-import 'package:task_management_app/routing/app_router_names.dart';
+import 'package:task_management_app/presentation/board_screen/view/widgets/draggable_card_widget.dart';
 import 'package:task_management_app/styles/colors.dart';
 
 import 'widgets/add_card_widget.dart';
@@ -102,81 +101,87 @@ class BoardScreen extends StatelessWidget {
                                     ),
                                     if (state.statuses[pageViewIndex].cards!
                                         .isNotEmpty)
-                                      ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: state
-                                              .statuses[pageViewIndex]
-                                              .cards!
-                                              .length,
-                                          itemBuilder: (BuildContext context,
-                                              int cardListIndex) {
-                                            final cards =
-                                                state.statuses[index].cards;
-                                            return InkWell(
-                                              onTap: () async {
-                                                final arguments = {
-                                                  'card': cards[cardListIndex],
-                                                  'boardId': board.uid,
-                                                  'statusId':
-                                                      state.statuses[index].uid,
-                                                };
-                                                final isSaved = await Navigator.pushNamed(
-                                                  context,
-                                                  RouteNames.editCard,
-                                                  arguments: arguments,
-                                                );
-                                                if(isSaved == true) {
-                                                  if(!context.mounted) return;
-                                                  BlocProvider.of<BoardScreenBloc>(context).add(BoardStatusesFetched(boardId: board.uid));
-                                                }
+                                      draggableCardWidget(
+                                        context,
+                                        board.uid!,
+                                        state.statuses[index].uid!,
+                                        state.statuses[pageViewIndex].cards!,
+                                      )
+                                    // ListView.builder(
+                                    //     shrinkWrap: true,
+                                    //     itemCount: state
+                                    //         .statuses[pageViewIndex]
+                                    //         .cards!
+                                    //         .length,
+                                    //     itemBuilder: (BuildContext context,
+                                    //         int cardListIndex) {
+                                    //       final cards =
+                                    //           state.statuses[index].cards;
+                                    //       return InkWell(
+                                    //         onTap: () async {
+                                    //           final arguments = {
+                                    //             'card': cards[cardListIndex],
+                                    //             'boardId': board.uid,
+                                    //             'statusId':
+                                    //                 state.statuses[index].uid,
+                                    //           };
+                                    //           final isSaved = await Navigator.pushNamed(
+                                    //             context,
+                                    //             RouteNames.editCard,
+                                    //             arguments: arguments,
+                                    //           );
+                                    //           if(isSaved == true) {
+                                    //             if(!context.mounted) return;
+                                    //             BlocProvider.of<BoardScreenBloc>(context).add(BoardStatusesFetched(boardId: board.uid));
+                                    //           }
 
-                                              },
-                                              child: Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  vertical: 8.0,
-                                                  horizontal: 8.0,
-                                                ),
-                                                margin:
-                                                    const EdgeInsets.symmetric(
-                                                  horizontal: 8.0,
-                                                  vertical: 5.0,
-                                                ),
-                                                decoration: const BoxDecoration(
-                                                  color: AppColors.lightBlack,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(6.0)),
-                                                ),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      cards![cardListIndex]
-                                                          .cardName!,
-                                                      style: const TextStyle(
-                                                        fontFamily: 'Chivo',
-                                                        color: AppColors
-                                                            .mainTextColor,
-                                                      ),
-                                                    ),
-                                                    Visibility(
-                                                      visible:
-                                                          cards[cardListIndex]
-                                                                  .priority != null,
-                                                      child: cards[cardListIndex]
-                                                                  .priority != null ? cardPriorityList[
-                                                              cards[cardListIndex]
-                                                                      .priority! -
-                                                                  1]
-                                                          .icon! : const SizedBox(),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          })
+                                    //         },
+                                    //         child: Container(
+                                    //           padding:
+                                    //               const EdgeInsets.symmetric(
+                                    //             vertical: 8.0,
+                                    //             horizontal: 8.0,
+                                    //           ),
+                                    //           margin:
+                                    //               const EdgeInsets.symmetric(
+                                    //             horizontal: 8.0,
+                                    //             vertical: 5.0,
+                                    //           ),
+                                    //           decoration: const BoxDecoration(
+                                    //             color: AppColors.lightBlack,
+                                    //             borderRadius:
+                                    //                 BorderRadius.all(
+                                    //                     Radius.circular(6.0)),
+                                    //           ),
+                                    //           child: Column(
+                                    //             crossAxisAlignment:
+                                    //                 CrossAxisAlignment.start,
+                                    //             children: [
+                                    //               Text(
+                                    //                 cards![cardListIndex]
+                                    //                     .cardName!,
+                                    //                 style: const TextStyle(
+                                    //                   fontFamily: 'Chivo',
+                                    //                   color: AppColors
+                                    //                       .mainTextColor,
+                                    //                 ),
+                                    //               ),
+                                    //               Visibility(
+                                    //                 visible:
+                                    //                     cards[cardListIndex]
+                                    //                             .priority != null,
+                                    //                 child: cards[cardListIndex]
+                                    //                             .priority != null ? cardPriorityList[
+                                    //                         cards[cardListIndex]
+                                    //                                 .priority! -
+                                    //                             1]
+                                    //                     .icon! : const SizedBox(),
+                                    //               ),
+                                    //             ],
+                                    //           ),
+                                    //         ),
+                                    //       );
+                                    //     })
                                     else
                                       const SizedBox(height: 10),
                                     addCardWidget(
