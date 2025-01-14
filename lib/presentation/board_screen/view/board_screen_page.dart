@@ -4,18 +4,17 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_management_app/data/models/boards/boards_model.dart';
 import 'package:task_management_app/networking/repositories/repositories.dart';
 import 'package:task_management_app/presentation/board_screen/board_screen.dart';
-import 'package:task_management_app/presentation/board_screen/view/widgets/draggable_card_widget.dart';
 import 'package:task_management_app/styles/colors.dart';
 
 import 'widgets/add_card_widget.dart';
 import 'widgets/add_status_widget.dart';
+import 'widgets/draggable_card_widget.dart';
 
 class BoardScreen extends StatelessWidget {
   BoardScreen({super.key, required this.board});
 
   final BoardsModel board;
   final CarouselSliderController _controller = CarouselSliderController();
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -45,6 +44,7 @@ class BoardScreen extends StatelessWidget {
 
   Widget _bodyScreenBody() {
     return BlocBuilder<BoardScreenBloc, BoardScreenState>(
+      buildWhen: (previous, current) => previous.statuses != current.statuses,
       builder: (context, state) {
         final statuses = [...state.statuses, ""];
         if (state.isFetchingStatuses!) {
@@ -56,6 +56,7 @@ class BoardScreen extends StatelessWidget {
         } else {
           return Container(
             margin: const EdgeInsets.only(bottom: 24.0),
+            padding: const EdgeInsets.only(left: 12.0, top: 12.0),
             child: Column(
               children: [
                 Expanded(
@@ -107,81 +108,6 @@ class BoardScreen extends StatelessWidget {
                                         state.statuses[index].uid!,
                                         state.statuses[pageViewIndex].cards!,
                                       )
-                                    // ListView.builder(
-                                    //     shrinkWrap: true,
-                                    //     itemCount: state
-                                    //         .statuses[pageViewIndex]
-                                    //         .cards!
-                                    //         .length,
-                                    //     itemBuilder: (BuildContext context,
-                                    //         int cardListIndex) {
-                                    //       final cards =
-                                    //           state.statuses[index].cards;
-                                    //       return InkWell(
-                                    //         onTap: () async {
-                                    //           final arguments = {
-                                    //             'card': cards[cardListIndex],
-                                    //             'boardId': board.uid,
-                                    //             'statusId':
-                                    //                 state.statuses[index].uid,
-                                    //           };
-                                    //           final isSaved = await Navigator.pushNamed(
-                                    //             context,
-                                    //             RouteNames.editCard,
-                                    //             arguments: arguments,
-                                    //           );
-                                    //           if(isSaved == true) {
-                                    //             if(!context.mounted) return;
-                                    //             BlocProvider.of<BoardScreenBloc>(context).add(BoardStatusesFetched(boardId: board.uid));
-                                    //           }
-
-                                    //         },
-                                    //         child: Container(
-                                    //           padding:
-                                    //               const EdgeInsets.symmetric(
-                                    //             vertical: 8.0,
-                                    //             horizontal: 8.0,
-                                    //           ),
-                                    //           margin:
-                                    //               const EdgeInsets.symmetric(
-                                    //             horizontal: 8.0,
-                                    //             vertical: 5.0,
-                                    //           ),
-                                    //           decoration: const BoxDecoration(
-                                    //             color: AppColors.lightBlack,
-                                    //             borderRadius:
-                                    //                 BorderRadius.all(
-                                    //                     Radius.circular(6.0)),
-                                    //           ),
-                                    //           child: Column(
-                                    //             crossAxisAlignment:
-                                    //                 CrossAxisAlignment.start,
-                                    //             children: [
-                                    //               Text(
-                                    //                 cards![cardListIndex]
-                                    //                     .cardName!,
-                                    //                 style: const TextStyle(
-                                    //                   fontFamily: 'Chivo',
-                                    //                   color: AppColors
-                                    //                       .mainTextColor,
-                                    //                 ),
-                                    //               ),
-                                    //               Visibility(
-                                    //                 visible:
-                                    //                     cards[cardListIndex]
-                                    //                             .priority != null,
-                                    //                 child: cards[cardListIndex]
-                                    //                             .priority != null ? cardPriorityList[
-                                    //                         cards[cardListIndex]
-                                    //                                 .priority! -
-                                    //                             1]
-                                    //                     .icon! : const SizedBox(),
-                                    //               ),
-                                    //             ],
-                                    //           ),
-                                    //         ),
-                                    //       );
-                                    //     })
                                     else
                                       const SizedBox(height: 10),
                                     addCardWidget(

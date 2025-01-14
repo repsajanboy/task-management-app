@@ -60,4 +60,7 @@ class BoardScreenState extends Equatable {
         cardName,
         isFetchingStatuses,
       ];
+  
+  @override
+  String toString() => 'MyState(statuses: $statuses)';
 }

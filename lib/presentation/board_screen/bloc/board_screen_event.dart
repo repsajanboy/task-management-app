@@ -70,6 +70,7 @@ class CardIndexReordered extends BoardScreenEvent {
   final String? boardId;
   final String? statusId;
   final bool? isGreater;
+  final int? oldListIndex;
 
   CardIndexReordered({
     this.oldIndex,
@@ -77,5 +78,18 @@ class CardIndexReordered extends BoardScreenEvent {
     this.boardId,
     this.statusId,
     this.isGreater,
+    this.oldListIndex,
+  });
+}
+
+class CardMovedToOtherList extends BoardScreenEvent {
+  final int? oldListIndex;
+  final int? newListIndex;
+  final int? oldIndex;
+
+  CardMovedToOtherList({
+    this.oldListIndex,
+    this.newListIndex,
+    this.oldIndex,
   });
 }

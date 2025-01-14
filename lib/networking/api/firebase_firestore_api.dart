@@ -81,11 +81,11 @@ class FirebaseFirestoreApi {
   }
 
   Future<void> updateCardIndex(
-      String boardId, String StatusId, String cardId, int newIndex) async {
+      String boardId, String statusId, String cardId, int newIndex) async {
     return await boardsReference
         .doc(boardId)
         .collection('statuses')
-        .doc(StatusId)
+        .doc(statusId)
         .collection('cards')
         .doc(cardId)
         .update({'cardIndex': newIndex});

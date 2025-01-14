@@ -28,6 +28,7 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
     on<AddCardNameButtonClicked>(_addCardName);
     //on<StatusCardsFetched>(_fetchCardsOnStatus);
     on<CardIndexReordered>(_cardIndexReordered);
+    on<CardMovedToOtherList>(_cardMovedToOtherList);
   }
 
   final BoardsRepository boardsRepository;
@@ -122,13 +123,21 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
     CardIndexReordered event,
     Emitter<BoardScreenState> emit,
   ) async {
-    final oldList =
-        state.statuses.where((e) => e.uid == event.statusId).first.cards;
-    final card = oldList!.removeAt(event.oldIndex!);
-    oldList.insert(event.newIndex!, card);
+    final statuses = List<StatusesModel>.from(state.statuses);
+    final cards = List<CardsModel>.from(statuses.where((e) => e.uid == event.statusId).first.cards!);
+    final oldList = state.statuses
+        .where((e) => e.uid == event.statusId)
+        .first
+        .cards;
+    final card = cards.removeAt(event.oldIndex!);
+    cards.insert(event.newIndex!, card);
+
+    statuses.where((e) => e.uid == event.statusId).first.cards = cards;
+
+    emit(state.copyWith(statuses: statuses));
     if (event.isGreater!) {
       for (int i = event.newIndex!;
-          i < oldList.length && i <= event.oldIndex!;
+          i < oldList!.length && i <= event.oldIndex!;
           i++) {
         await boardsRepository.updateCardIndex(
           event.boardId!,
@@ -139,7 +148,7 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
       }
     } else {
       for (int i = event.oldIndex!;
-          i < oldList.length && i <= event.newIndex!;
+          i < oldList!.length && i <= event.newIndex!;
           i++) {
         await boardsRepository.updateCardIndex(
           event.boardId!,
@@ -149,7 +158,14 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
         );
       }
     }
+  }
 
-    emit(state.copyWith(cards: oldList));
+  Future<void> _cardMovedToOtherList(
+    CardMovedToOtherList event,
+    Emitter<BoardScreenState> emit,
+  ) async {
+    final card = state.statuses[event.oldListIndex!].cards![event.oldIndex!];
+    state.statuses[event.newListIndex!].cards!.add(card);
+    emit(state.copyWith(isFetchingStatuses: false));
   }
 }
