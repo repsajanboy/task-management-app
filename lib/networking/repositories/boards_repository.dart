@@ -62,4 +62,12 @@ class BoardsRepository {
   Future<void> updateCardIndex(String boardId, String statusId, String cardId, int newIndex) async {
     return await _firebaseFirestoreApi.updateCardIndex(boardId, statusId, cardId, newIndex);
   }
+
+  Future<void> moveCardToNewStatus(String boardId, String newStatusId, CardsModel card) async {
+    return await _firebaseFirestoreApi.moveCardToNewStatus(boardId, newStatusId, card);
+  }
+
+  Future<void> deleteCardFromStatus (String boardId, String statusId, String cardId) async {
+    return await _firebaseFirestoreApi.deleteCardFromStatus(boardId, statusId, cardId);
+  }
 }

@@ -4,6 +4,8 @@ import 'package:task_management_app/networking/repositories/boards_repository.da
 import 'package:task_management_app/presentation/dashboard/dashboard.dart';
 import 'package:task_management_app/routing/app_router.dart';
 
+import 'presentation/board_screen/board_screen.dart';
+
 class MyApp extends StatelessWidget {
   final AppRouter router;
   const MyApp({super.key, required this.router});
@@ -22,6 +24,10 @@ class MyApp extends StatelessWidget {
             create: (context) => BoardsListBloc(
                 boardsRepository: context.read<BoardsRepository>())
               ..add(BoardsFetched()),
+          ),
+          BlocProvider(
+            create: (context) => BoardScreenBloc(
+                boardsRepository: context.read<BoardsRepository>()),
           ),
         ],
         child: MaterialApp(
