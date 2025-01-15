@@ -7,6 +7,7 @@ import 'package:task_management_app/data/models/cards/card_priority_model.dart';
 import 'package:task_management_app/data/models/cards/cards_model.dart';
 import 'package:task_management_app/networking/repositories/repositories.dart';
 import 'package:task_management_app/presentation/board_screen/board_screen.dart';
+import 'package:task_management_app/routing/app_router_names.dart';
 import 'package:task_management_app/styles/colors.dart';
 
 import 'widgets/add_card_widget.dart';
@@ -106,7 +107,7 @@ class BoardScreen extends StatelessWidget {
               listPadding: const EdgeInsets.all(12.0),
               children: List.generate(
                 statuses.length,
-                (index) => _buildStatusList(index, state.statuses),
+                (index) => _buildStatusList(context, index, state.statuses),
               ),
               contentsWhenEmpty: addStatusWidget(board.uid!),
               scrollController: _controller,
@@ -117,7 +118,7 @@ class BoardScreen extends StatelessWidget {
     );
   }
 
-  _buildStatusList(int statusIndex, List<StatusesModel> statuses) {
+  _buildStatusList(BuildContext context, int statusIndex, List<StatusesModel> statuses) {
     if (statusIndex < statuses.length) {
       var statusList = statuses[statusIndex];
       return DragAndDropList(
@@ -154,7 +155,7 @@ class BoardScreen extends StatelessWidget {
         ),
         children: List.generate(
           statusList.cards!.length,
-          (cardIndex) => _buildCard(statusList.cards![cardIndex]),
+          (cardIndex) => _buildCard(context, statusList.cards![cardIndex], statusList.uid!),
         ),
         contentsWhenEmpty: const SizedBox(),
       );
@@ -167,39 +168,58 @@ class BoardScreen extends StatelessWidget {
     );
   }
 
-  _buildCard(CardsModel card) {
+  _buildCard(BuildContext context, CardsModel card, String statusId) {
     return DragAndDropItem(
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(
-          vertical: 8.0,
-          horizontal: 8.0,
-        ),
-        margin: const EdgeInsets.symmetric(
-          horizontal: 8.0,
-          vertical: 5.0,
-        ),
-        decoration: const BoxDecoration(
-          color: AppColors.lightBlack,
-          borderRadius: BorderRadius.all(Radius.circular(6.0)),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              card.cardName!,
-              style: const TextStyle(
-                fontFamily: 'Chivo',
-                color: AppColors.mainTextColor,
+      child: InkWell(
+        onTap: () async {
+            final arguments = {
+              'card': card,
+              'boardId': board.uid,
+              'statusId': statusId,
+            };
+            final isSaved = await Navigator.pushNamed(
+              context,
+              RouteNames.editCard,
+              arguments: arguments,
+            );
+            if (isSaved == true) {
+              if (!context.mounted) return;
+              BlocProvider.of<BoardScreenBloc>(context)
+                  .add(BoardStatusesFetched(boardId: board.uid));
+            }
+          },
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(
+            vertical: 8.0,
+            horizontal: 8.0,
+          ),
+          margin: const EdgeInsets.symmetric(
+            horizontal: 8.0,
+            vertical: 5.0,
+          ),
+          decoration: const BoxDecoration(
+            color: AppColors.lightBlack,
+            borderRadius: BorderRadius.all(Radius.circular(6.0)),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                card.cardName!,
+                style: const TextStyle(
+                  fontFamily: 'Chivo',
+                  color: AppColors.mainTextColor,
+                ),
               ),
-            ),
-            Visibility(
-              visible: card.priority != null,
-              child: card.priority != null
-                  ? cardPriorityList[card.priority! - 1].icon!
-                  : const SizedBox(),
-            ),
-          ],
+              Visibility(
+                visible: card.priority != null,
+                child: card.priority != null
+                    ? cardPriorityList[card.priority! - 1].icon!
+                    : const SizedBox(),
+              ),
+            ],
+          ),
         ),
       ),
     );
