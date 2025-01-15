@@ -133,9 +133,8 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
         state.statuses.where((e) => e.uid == event.statusId).first.cards;
     final card = cards.removeAt(event.oldIndex!);
     cards.insert(event.newIndex!, card);
-
+    
     statuses[event.oldListIndex!].cards = cards;
-
     emit(state.copyWith(statuses: statuses, cards: cards));
     if (event.isGreater!) {
       for (int i = event.newIndex!;
