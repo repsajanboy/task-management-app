@@ -96,6 +96,7 @@ class BoardScreen extends StatelessWidget {
                         oldListIndex: oldListIndex,
                         newListIndex: newListIndex,
                         oldIndex: oldItemIndex,
+                        boardId: board.uid,
                       ));
                 }
               },

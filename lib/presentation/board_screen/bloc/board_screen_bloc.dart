@@ -109,10 +109,15 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
       final addedCard =
           CardsModel(uid: cardId, cardName: state.cardName, description: '');
       final statuses = List<StatusesModel>.from(state.statuses);
-      final cards = List<CardsModel>.from(statuses.where((e) => e.uid == event.statusId).first.cards!);
+      final cards = List<CardsModel>.from(
+          statuses.where((e) => e.uid == event.statusId).first.cards!);
       cards.add(addedCard);
       statuses.where((e) => e.uid == event.statusId).first.cards = cards;
-      emit(state.copyWith(cardName: '', addCardNameTextBoxVisible: false, statuses:  statuses, cards: cards));
+      emit(state.copyWith(
+          cardName: '',
+          addCardNameTextBoxVisible: false,
+          statuses: statuses,
+          cards: cards));
     } on Exception catch (e) {
       print(e.toString());
     }
@@ -124,10 +129,8 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
   ) async {
     final statuses = List<StatusesModel>.from(state.statuses);
     final cards = List<CardsModel>.from(statuses[event.oldListIndex!].cards!);
-    final oldList = state.statuses
-        .where((e) => e.uid == event.statusId)
-        .first
-        .cards;
+    final oldList =
+        state.statuses.where((e) => e.uid == event.statusId).first.cards;
     final card = cards.removeAt(event.oldIndex!);
     cards.insert(event.newIndex!, card);
 
@@ -164,8 +167,10 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
     Emitter<BoardScreenState> emit,
   ) async {
     final statuses = List<StatusesModel>.from(state.statuses);
-    final newCards = List<CardsModel>.from(statuses[event.newListIndex!].cards!);
-    final oldCards = List<CardsModel>.from(statuses[event.oldListIndex!].cards!);
+    final newCards =
+        List<CardsModel>.from(statuses[event.newListIndex!].cards!);
+    final oldCards =
+        List<CardsModel>.from(statuses[event.oldListIndex!].cards!);
 
     final card = oldCards.removeAt(event.oldIndex!);
     newCards.insert(newCards.length, card);
@@ -173,6 +178,17 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
     statuses[event.newListIndex!].cards = newCards;
     emit(state.copyWith(statuses: statuses, cards: newCards));
 
-    //Create action for updating status in repository and api 
+    final movedCard = CardsModel(
+        cardName: card.cardName,
+        description: card.description,
+        startDate: card.startDate,
+        dueDate: card.dueDate,
+        priority: card.priority,
+        cardIndex: statuses[event.newListIndex!].cards!.length);
+
+    await boardsRepository.moveCardToNewStatus(
+        event.boardId!, statuses[event.newListIndex!].uid!, movedCard);
+    await boardsRepository.deleteCardFromStatus(
+        event.boardId!, statuses[event.oldListIndex!].uid!, card.uid!);
   }
 }

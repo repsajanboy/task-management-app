@@ -86,10 +86,12 @@ class CardMovedToOtherList extends BoardScreenEvent {
   final int? oldListIndex;
   final int? newListIndex;
   final int? oldIndex;
+  final String? boardId;
 
   CardMovedToOtherList({
     this.oldListIndex,
     this.newListIndex,
     this.oldIndex,
+    this.boardId,
   });
 }

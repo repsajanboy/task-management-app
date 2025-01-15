@@ -27,7 +27,10 @@ class FirebaseFirestoreApi {
     return snapshot.docs;
   }
 
-  Future<dynamic> getStatusCards(String boardId, String statusId) async {
+  Future<dynamic> getStatusCards(
+    String boardId,
+    String statusId,
+  ) async {
     QuerySnapshot snapshot = await boardsReference
         .doc(boardId)
         .collection('statuses')
@@ -38,7 +41,10 @@ class FirebaseFirestoreApi {
     return snapshot.docs;
   }
 
-  Future<String> addBoardStatus(String boardId, StatusesModel status) async {
+  Future<String> addBoardStatus(
+    String boardId,
+    StatusesModel status,
+  ) async {
     final statusRef = await boardsReference
         .doc(boardId)
         .collection('statuses')
@@ -54,7 +60,10 @@ class FirebaseFirestoreApi {
   }
 
   Future<String> addCardName(
-      String boardId, String statusId, CardsModel card) async {
+    String boardId,
+    String statusId,
+    CardsModel card,
+  ) async {
     final cardRef = await boardsReference
         .doc(boardId)
         .collection('statuses')
@@ -70,7 +79,10 @@ class FirebaseFirestoreApi {
   }
 
   Future<void> updateCardDetails(
-      String boardId, String statusId, CardsModel card) async {
+    String boardId,
+    String statusId,
+    CardsModel card,
+  ) async {
     return await boardsReference
         .doc(boardId)
         .collection('statuses')
@@ -81,7 +93,11 @@ class FirebaseFirestoreApi {
   }
 
   Future<void> updateCardIndex(
-      String boardId, String statusId, String cardId, int newIndex) async {
+    String boardId,
+    String statusId,
+    String cardId,
+    int newIndex,
+  ) async {
     return await boardsReference
         .doc(boardId)
         .collection('statuses')
@@ -89,5 +105,35 @@ class FirebaseFirestoreApi {
         .collection('cards')
         .doc(cardId)
         .update({'cardIndex': newIndex});
+  }
+
+  Future<void> moveCardToNewStatus(
+    String boardId,
+    String newStatusId,
+    CardsModel card,
+  ) async {
+    return await boardsReference
+        .doc(boardId)
+        .collection('statuses')
+        .doc(newStatusId)
+        .collection('cards')
+        .add(card.toJson())
+        .then((e) {
+      e.update({'cardCreatedDate': FieldValue.serverTimestamp()});
+    });
+  }
+
+  Future<void> deleteCardFromStatus(
+    String boardId,
+    String statusId,
+    String cardId,
+  ) async {
+    return await boardsReference
+        .doc(boardId)
+        .collection('statuses')
+        .doc(statusId)
+        .collection('cards')
+        .doc(cardId)
+        .delete();
   }
 }
