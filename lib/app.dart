@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           title: 'Task Management App',
+          theme: ThemeData.dark(),
           debugShowCheckedModeBanner: false,
           onGenerateRoute: router.onGenerateRoute,
         ),
