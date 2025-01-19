@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:task_management_app/presentation/planner/view/widget/appointment_board_widget.dart';
+import 'package:task_management_app/presentation/planner/view/widget/appointment_description_widget.dart';
+import 'package:task_management_app/presentation/planner/view/widget/appointment_notification_widget.dart';
+import 'package:task_management_app/presentation/planner/view/widget/appointment_time_widget.dart';
+import 'package:task_management_app/presentation/planner/view/widget/appointment_title_widget.dart';
 import 'package:task_management_app/styles/colors.dart';
 
 class PlannerScreen extends StatelessWidget {
@@ -86,8 +91,8 @@ class PlannerScreen extends StatelessWidget {
     return Padding(
       padding: MediaQuery.of(context).viewInsets,
       child: Container(
-        height: MediaQuery.of(context).size.height * .5,
-        padding: const EdgeInsets.only(top: 16.0, left: 24.0, right: 24.0),
+        height: MediaQuery.of(context).size.height * .70,
+        padding: const EdgeInsets.only(top: 16.0),
         width: double.infinity,
         decoration: const BoxDecoration(
           color: AppColors.lightBlack,
@@ -102,6 +107,16 @@ class PlannerScreen extends StatelessWidget {
             children: [
               _bottomModalSheetHeader(context),
               const SizedBox(height: 10.0),
+              const AppointmentTitleWidget(),
+              _spaceDivider(),
+              const AppointmentTimeWidget(),
+              _spaceDivider(),
+              const AppointmentNotificationWidget(),
+              _spaceDivider(),
+              const AppointmentBoardWidget(),
+              _spaceDivider(),
+              const AppointmentDescriptionWidget(),
+              _spaceDivider(),
             ],
           ),
         ),
@@ -109,14 +124,26 @@ class PlannerScreen extends StatelessWidget {
     );
   }
 
+  Widget _spaceDivider() {
+    return const Column(
+      children: [
+        SizedBox(height: 10.0),
+        Divider(color: Colors.white24),
+        SizedBox(height: 10.0),
+      ],
+    );
+  }
+
   Widget _bottomModalSheetHeader(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 24.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+            },
             child: const Text(
               'Cancel',
               style: TextStyle(

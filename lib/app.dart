@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_management_app/networking/repositories/boards_repository.dart';
 import 'package:task_management_app/presentation/dashboard/dashboard.dart';
+import 'package:task_management_app/presentation/planner/bloc/planner_bloc.dart';
 import 'package:task_management_app/routing/app_router.dart';
 
 import 'presentation/board_screen/board_screen.dart';
@@ -29,10 +30,20 @@ class MyApp extends StatelessWidget {
             create: (context) => BoardScreenBloc(
                 boardsRepository: context.read<BoardsRepository>()),
           ),
+          BlocProvider(
+            create: (context) =>
+                PlannerBloc(context)..add(GetBoardsInBoardListBloc()),
+          )
         ],
         child: MaterialApp(
           title: 'Task Management App',
-          theme: ThemeData.dark(),
+          theme: ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: Colors.blue,
+              onPrimary: Colors.white,
+              secondary: Colors.blue[400]!
+            )
+          ),
           debugShowCheckedModeBanner: false,
           onGenerateRoute: router.onGenerateRoute,
         ),
