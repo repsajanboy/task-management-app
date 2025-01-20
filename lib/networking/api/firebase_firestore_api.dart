@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:task_management_app/data/models/appointment/appointment_model.dart';
 import 'package:task_management_app/data/models/boards/create_board_model.dart';
 import 'package:task_management_app/data/models/boards/statuses_model.dart';
 import 'package:task_management_app/data/models/cards/cards_model.dart';
 
 class FirebaseFirestoreApi {
   final boardsReference = FirebaseFirestore.instance.collection('boards');
+  final appointmentsReference = FirebaseFirestore.instance.collection('appointments');
 
   Future<void> createNewBoard(CreateBoardModel boards) async {
     return await boardsReference.add(boards.toJson()).then((e) {
@@ -135,5 +137,17 @@ class FirebaseFirestoreApi {
         .collection('cards')
         .doc(cardId)
         .delete();
+  }
+
+  //appointment section
+  Future<void> createAppointment(AppointmentModel appointment) async {
+    return await appointmentsReference.add(appointment.toJson()).then((e) {
+      e.update({'appointmentCreatedDate': FieldValue.serverTimestamp()});
+    });
+  }
+
+  Future<dynamic> getAppointments() async {
+    QuerySnapshot snapshot = await appointmentsReference.get();
+    return snapshot.docs;
   }
 }

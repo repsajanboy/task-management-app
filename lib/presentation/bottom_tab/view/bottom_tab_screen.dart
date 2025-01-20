@@ -123,13 +123,6 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
             color: AppColors.bottomNavItemActiveColor,
           ),
         );
-      default:
-        return BottomTabItem(
-          page: const SizedBox(),
-          title: '',
-          icon: const SizedBox(),
-          activeIcon: const SizedBox(),
-        );
-    }
+      }
   }
 }
