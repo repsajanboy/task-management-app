@@ -11,6 +11,7 @@ class PlannerState extends Equatable {
   final int? backgroundColor;
   final String? boardName;
   final List<BoardsModel> boards;
+  final List<AppointmentModel> appointments;
 
   PlannerState({
     this.appointmentTitle,
@@ -23,6 +24,7 @@ class PlannerState extends Equatable {
     this.backgroundColor = 4280391411,
     this.boardName = 'Select board',
     this.boards = const <BoardsModel>[],
+    this.appointments = const <AppointmentModel>[],
   })  : startDate = startDate ?? DateTime.now(),
         startTime = startTime ?? DateTime.now(),
         endDate = endDate ?? DateTime.now(),
@@ -39,6 +41,7 @@ class PlannerState extends Equatable {
     int? backgroundColor,
     String? boardName,
     List<BoardsModel>? boards,
+    List<AppointmentModel>? appointments,
   }) {
     return PlannerState(
       appointmentTitle: appointmentTitle ?? this.appointmentTitle,
@@ -51,6 +54,7 @@ class PlannerState extends Equatable {
       backgroundColor: backgroundColor ?? this.backgroundColor,
       boardName: boardName ?? this.boardName,
       boards: boards ?? this.boards,
+      appointments: appointments ?? this.appointments,
     );
   }
 
@@ -66,5 +70,6 @@ class PlannerState extends Equatable {
         backgroundColor,
         boardName,
         boards,
+        appointments,
       ];
 }

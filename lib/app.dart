@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task_management_app/networking/repositories/boards_repository.dart';
+import 'package:task_management_app/networking/repositories/repositories.dart';
 import 'package:task_management_app/presentation/dashboard/dashboard.dart';
 import 'package:task_management_app/presentation/planner/bloc/planner_bloc.dart';
 import 'package:task_management_app/routing/app_router.dart';
@@ -17,7 +17,10 @@ class MyApp extends StatelessWidget {
       providers: [
         RepositoryProvider<BoardsRepository>(
           create: (context) => BoardsRepository(),
-        )
+        ),
+        RepositoryProvider(
+          create: (context) => AppointmentRepository(),
+        ),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -31,19 +34,19 @@ class MyApp extends StatelessWidget {
                 boardsRepository: context.read<BoardsRepository>()),
           ),
           BlocProvider(
-            create: (context) =>
-                PlannerBloc(context)..add(GetBoardsInBoardListBloc()),
+            create: (context) => PlannerBloc(
+                appointmentRepository: context.read<AppointmentRepository>(),
+                context: context)
+              ..add(AppointmentsFetched()),
           )
         ],
         child: MaterialApp(
           title: 'Task Management App',
           theme: ThemeData.dark().copyWith(
-            colorScheme: ColorScheme.dark(
-              primary: Colors.blue,
-              onPrimary: Colors.white,
-              secondary: Colors.blue[400]!
-            )
-          ),
+              colorScheme: ColorScheme.dark(
+                  primary: Colors.blue,
+                  onPrimary: Colors.white,
+                  secondary: Colors.blue[400]!)),
           debugShowCheckedModeBanner: false,
           onGenerateRoute: router.onGenerateRoute,
         ),

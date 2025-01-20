@@ -47,3 +47,33 @@ class AppointmentDescriptionChanged extends PlannerEvent {
 }
 
 class GetBoardsInBoardListBloc extends PlannerEvent {}
+
+class CreateAppointmentSaved extends PlannerEvent {}
+
+class AppointmentsFetched extends PlannerEvent {}
+
+class AppointmentOnTapped extends PlannerEvent {
+  final String? appointmentTitle;
+  final DateTime? startDate;
+  final DateTime? startTime;
+  final DateTime? endDate;
+  final DateTime? endTime;
+  final bool? allDay;
+  final String? description;
+  final int? backgroundColor;
+  final String? boardName;
+
+  AppointmentOnTapped({
+    this.appointmentTitle,
+    this.startDate,
+    this.startTime,
+    this.endDate,
+    this.endTime,
+    this.allDay,
+    this.description,
+    this.backgroundColor,
+    this.boardName,
+  });
+}
+
+class ResetStateValue extends PlannerEvent {}

@@ -26,6 +26,9 @@ class AddBoardWidget extends StatelessWidget {
             return _createBoardModal(context);
           },
         ).whenComplete(() {
+          if(!context.mounted) {
+            return;
+          }
           BlocProvider.of<BoardsListBloc>(context).add(BoardsFetched());
         });
       },

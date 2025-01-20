@@ -13,6 +13,7 @@ class AppointmentTitleWidget extends StatelessWidget {
         return Padding(
           padding: const EdgeInsets.only(left: 64.0),
           child: TextFormField(
+            initialValue: state.appointmentTitle ?? '',
             cursorColor: AppColors.mainCursorColor,
             style: const TextStyle(
               fontFamily: 'Chivo',

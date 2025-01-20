@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:task_management_app/data/models/appointment/appointment_data_source.dart';
+import 'package:task_management_app/presentation/planner/planner.dart';
 import 'package:task_management_app/presentation/planner/view/widget/appointment_board_widget.dart';
 import 'package:task_management_app/presentation/planner/view/widget/appointment_description_widget.dart';
 import 'package:task_management_app/presentation/planner/view/widget/appointment_notification_widget.dart';
@@ -27,6 +30,7 @@ class PlannerScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
+              context.read<PlannerBloc>().add(GetBoardsInBoardListBloc());
               showModalBottomSheet<void>(
                 context: context,
                 isDismissible: false,
@@ -40,7 +44,13 @@ class PlannerScreen extends StatelessWidget {
                 builder: (BuildContext context) {
                   return _createAppointmentModal(context);
                 },
-              );
+              ).whenComplete(() {
+                if (!context.mounted) {
+                  return;
+                }
+                BlocProvider.of<PlannerBloc>(context)
+                    .add(AppointmentsFetched());
+              });
             },
             icon: const Icon(
               Icons.add,
@@ -49,39 +59,81 @@ class PlannerScreen extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: SfCalendar(
-          showNavigationArrow: true,
-          headerStyle: const CalendarHeaderStyle(
-              backgroundColor: AppColors.lightBlack,
-              textStyle: TextStyle(
-                  fontFamily: "Chivo", color: AppColors.mainTextColor)),
-          selectionDecoration: BoxDecoration(
-            border: Border.all(
-              color: AppColors.todayHightlightColor,
-            ),
-          ),
-          todayHighlightColor: AppColors.todayHightlightColor,
-          todayTextStyle: const TextStyle(color: AppColors.mainTextColor),
-          viewHeaderStyle: const ViewHeaderStyle(
-              dateTextStyle: TextStyle(color: AppColors.mainTextColor),
-              dayTextStyle: TextStyle(color: AppColors.mainTextColor)),
-          view: CalendarView.day,
-          minDate: DateTime(2025, 01, 01, 07, 0, 0),
-          allowedViews: const [CalendarView.day, CalendarView.week],
-          // monthViewSettings: const MonthViewSettings(
-          //   dayFormat: 'EEE',
-          //   navigationDirection: MonthNavigationDirection.horizontal,
-          //   showAgenda: true,
-          //   agendaItemHeight: 70,
-          // ),
-          timeSlotViewSettings: const TimeSlotViewSettings(
-            dayFormat: 'EEE',
-            timeIntervalHeight: 60,
-            timeTextStyle: TextStyle(
-              color: AppColors.mainTextColor,
-            ),
-          ),
-          onTap: (calendarTapDetails) {},
+        child: BlocBuilder<PlannerBloc, PlannerState>(
+          builder: (context, state) {
+            return SfCalendar(
+              dataSource: AppointmentDataSource(state.appointments),
+              showNavigationArrow: true,
+              headerStyle: const CalendarHeaderStyle(
+                  backgroundColor: AppColors.lightBlack,
+                  textStyle: TextStyle(
+                      fontFamily: "Chivo", color: AppColors.mainTextColor)),
+              selectionDecoration: BoxDecoration(
+                border: Border.all(
+                  color: AppColors.todayHightlightColor,
+                ),
+              ),
+              initialDisplayDate: DateTime.now(),
+              todayHighlightColor: AppColors.todayHightlightColor,
+              todayTextStyle: const TextStyle(color: AppColors.mainTextColor),
+              viewHeaderStyle: const ViewHeaderStyle(
+                  dateTextStyle: TextStyle(color: AppColors.mainTextColor),
+                  dayTextStyle: TextStyle(color: AppColors.mainTextColor)),
+              view: CalendarView.day,
+              minDate: DateTime(2025, 01, 01, 07, 0, 0),
+              allowedViews: const [CalendarView.day, CalendarView.week],
+              timeSlotViewSettings: const TimeSlotViewSettings(
+                  dayFormat: 'EEE',
+                  timeIntervalHeight: 60,
+                  timeTextStyle: TextStyle(
+                    color: AppColors.mainTextColor,
+                  ),
+                  startHour: 0,
+                  endHour: 24),
+              onTap: (calendarTapDetails) {
+                if ((calendarTapDetails.appointments ?? []).isNotEmpty) {
+                  context.read<PlannerBloc>().add(AppointmentOnTapped(
+                        appointmentTitle: calendarTapDetails
+                            .appointments!.first.appointmentTitle,
+                        startDate:
+                            calendarTapDetails.appointments!.first.startDate,
+                        startTime:
+                            calendarTapDetails.appointments!.first.startTime,
+                        endDate: calendarTapDetails.appointments!.first.endDate,
+                        endTime: calendarTapDetails.appointments!.first.endTime,
+                        allDay: calendarTapDetails.appointments!.first.allDay,
+                        description:
+                            calendarTapDetails.appointments!.first.description,
+                        backgroundColor: calendarTapDetails
+                            .appointments!.first.backgroundColor,
+                        boardName:
+                            calendarTapDetails.appointments!.first.boardName,
+                      ));
+
+                  showModalBottomSheet<void>(
+                    context: context,
+                    isDismissible: false,
+                    isScrollControlled: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(24.0),
+                        topRight: Radius.circular(24.0),
+                      ),
+                    ),
+                    builder: (BuildContext context) {
+                      return _createAppointmentModal(context);
+                    },
+                  ).whenComplete(() {
+                    if (!context.mounted) {
+                      return;
+                    }
+                    BlocProvider.of<PlannerBloc>(context)
+                        .add(AppointmentsFetched());
+                  });
+                }
+              },
+            );
+          },
         ),
       ),
     );
@@ -140,31 +192,49 @@ class PlannerScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          InkWell(
-            onTap: () {
-              Navigator.pop(context);
+          BlocBuilder<PlannerBloc, PlannerState>(
+            builder: (context, state) {
+              return InkWell(
+                onTap: () {
+                  context.read<PlannerBloc>().add(ResetStateValue());
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    fontFamily: 'Chivo',
+                    color: AppColors.mainTextColor,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              );
             },
-            child: const Text(
-              'Cancel',
-              style: TextStyle(
-                fontFamily: 'Chivo',
-                color: AppColors.mainTextColor,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
           ),
-          InkWell(
-            onTap: () {},
-            child: const Text(
-              'Save',
-              style: TextStyle(
-                fontFamily: 'Chivo',
-                color: AppColors.mainTextColor,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+          BlocBuilder<PlannerBloc, PlannerState>(
+            builder: (context, state) {
+              return InkWell(
+                onTap: (state.appointmentTitle ?? '').trim().isEmpty
+                    ? null
+                    : () {
+                        context
+                            .read<PlannerBloc>()
+                            .add(CreateAppointmentSaved());
+                        Navigator.of(context).pop();
+                      },
+                child: Text(
+                  'Save',
+                  style: TextStyle(
+                    fontFamily: 'Chivo',
+                    color: (state.appointmentTitle ?? '').trim().isEmpty
+                        ? Colors.white30
+                        : Colors.blue,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              );
+            },
           )
         ],
       ),
