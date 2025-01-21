@@ -5,11 +5,16 @@ import 'package:task_management_app/presentation/board_screen/board_screen.dart'
 
 import 'package:task_management_app/presentation/bottom_tab/bottom_tab.dart';
 import 'package:task_management_app/presentation/card_edit_screen/card_edit.dart';
+import 'package:task_management_app/presentation/landing/landing.dart';
 import 'package:task_management_app/routing/app_router_names.dart';
 
 class AppRouter {
   Route onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
+      case RouteNames.landing:
+        return MaterialPageRoute(
+          builder: (_) => const LandingScreen(),
+        );
       case RouteNames.menu:
         return MaterialPageRoute(
           builder: (_) => const BottomNavBarScreen(
