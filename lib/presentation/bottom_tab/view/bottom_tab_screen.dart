@@ -101,9 +101,12 @@ class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
         return BottomTabItem(
           page: const NotificationScreen(),
           title: '',
-          icon: const Icon(
-            Icons.notifications_outlined,
-            color: AppColors.bottomNavItemColor,
+          icon: Badge.count(
+            count: 2,
+            child: const Icon(
+              Icons.notifications_outlined,
+              color: AppColors.bottomNavItemColor,
+            ),
           ),
           activeIcon: const Icon(
             Icons.notifications,

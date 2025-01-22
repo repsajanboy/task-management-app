@@ -18,6 +18,7 @@ class PlannerScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.lightBlack,
         title: const Text(
           'Task Time Blocker',
