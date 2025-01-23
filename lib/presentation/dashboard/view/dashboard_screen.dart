@@ -36,11 +36,18 @@ class DashboardScreen extends StatelessWidget {
 
   Widget _dashBoardsHeader() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
       child: Row(
         children: [
           const CircleAvatar(
             backgroundColor: Colors.blue,
+            child: Text(
+              'JM',
+              style: TextStyle(
+                fontFamily: "Montserrat",
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
           const SizedBox(
             width: 8.0,
@@ -72,16 +79,71 @@ class DashboardScreen extends StatelessWidget {
 
   Widget _addElementHere() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
-      margin: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
-      height: 100,
-      decoration: BoxDecoration(
-        border: Border.all(color: AppColors.mainBorderColor),
-      ),
-      child: const Center(
-        child: Text(
-          'Add elements/widget here',
-          style: TextStyle(color: AppColors.mainTextColor),
+      margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 12.0),
+      child: Card(
+        elevation: 5.0,
+        shadowColor: Colors.white,
+        color: AppColors.lightBlack,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+          child: Column(
+            children: [
+              const Row(
+                children: [
+                  CircleAvatar(
+                    radius: 14.0,
+                    backgroundColor: AppColors.iconGreyColor,
+                    child: Icon(
+                      Icons.star_rounded,
+                      size: 20,
+                    ),
+                  ),
+                  SizedBox(width: 8.0),
+                  Text(
+                    'GO PREMIUM!',
+                    style: TextStyle(
+                      fontFamily: "Montserrat",
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8.0),
+              const Text(
+                'Stay organized, boost productivity, and achieve your goals effortlessly with unlimited boards, automatic card sorter and many more.',
+                style: TextStyle(
+                  fontFamily: "chivo",
+                  color: AppColors.mainTextColor,
+                  fontSize: 12.0,
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  width: 180,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(8.0)),
+                  child: const Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Start free trial now',
+                        style: TextStyle(
+                          fontFamily: "Montserrat",
+                          color: Colors.white,
+                        ),
+                      ),
+                      Icon(Icons.chevron_right_rounded),
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -92,7 +154,7 @@ class DashboardScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Padding(
-          padding: EdgeInsets.only(left: 24.0, top: 8.0),
+          padding: EdgeInsets.only(left: 10.0, top: 8.0),
           child: Text(
             'Your Boards',
             style: TextStyle(
@@ -105,7 +167,7 @@ class DashboardScreen extends StatelessWidget {
         ),
         Expanded(
           child: Container(
-            padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0),
             margin: const EdgeInsets.only(bottom: 18.0),
             child: BlocBuilder<BoardsListBloc, BoardsListState>(
               builder: (context, state) {
@@ -134,7 +196,8 @@ class DashboardScreen extends StatelessWidget {
                           decoration: BoxDecoration(
                             color: AppColors.lightBlack,
                             border: Border.all(
-                                color: Colors.white70), //change border color
+                              color: Colors.white24,
+                            ), //change border color
                             borderRadius: const BorderRadius.all(
                               Radius.circular(8.0),
                             ),
@@ -145,14 +208,17 @@ class DashboardScreen extends StatelessWidget {
                               Expanded(
                                 flex: 2,
                                 child: Container(
-                                  padding:
-                                      const EdgeInsets.only(left: 8.0, top: 8.0),
+                                  padding: const EdgeInsets.only(
+                                    left: 8.0,
+                                    top: 8.0,
+                                  ),
                                   child: Text(
                                     state.boards[index - 1].boardTitle!,
                                     style: const TextStyle(
                                       fontFamily: 'Chivo',
                                       color: AppColors.mainTextColor,
                                       fontSize: 18,
+                                      fontWeight: FontWeight.w700,
                                     ),
                                   ),
                                 ),

@@ -35,7 +35,7 @@ class AddBoardWidget extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.lightBlack,
-          border: Border.all(color: Colors.white70),
+          border: Border.all(color: Colors.white24),
           borderRadius: const BorderRadius.all(
             Radius.circular(8.0),
           ),
