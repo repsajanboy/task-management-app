@@ -20,6 +20,8 @@ class PlannerScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.lightBlack,
+        titleSpacing: 10.0,
+        centerTitle: false,
         title: const Text(
           'Task Time Blocker',
           style: TextStyle(

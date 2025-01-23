@@ -12,7 +12,7 @@ class NotificationScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: AppColors.lightBlack,
-        titleSpacing: 24.0,
+        titleSpacing: 10.0,
         centerTitle: false,
         title: const Text(
           'Notifications',
