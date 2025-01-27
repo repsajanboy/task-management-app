@@ -27,7 +27,7 @@ class BoardScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Color(board.boardBackgroundColor!),
         appBar: AppBar(
-          backgroundColor: AppColors.lightBlack.withOpacity(0.65),
+          backgroundColor: AppColors.lightBlack.withValues(alpha: 0.65),
           leading: const BackButton(
             color: Colors.white,
           ),
