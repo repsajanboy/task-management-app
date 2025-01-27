@@ -12,6 +12,7 @@ import 'package:task_management_app/styles/colors.dart';
 
 import 'widgets/add_card_widget.dart';
 import 'widgets/add_status_widget.dart';
+import 'widgets/board_setting_widget.dart';
 
 class BoardScreen extends StatelessWidget {
   BoardScreen({super.key, required this.board});
@@ -39,6 +40,28 @@ class BoardScreen extends StatelessWidget {
             ),
           ),
           //Add action button in here
+          actions: [
+            IconButton(
+              onPressed: () {
+                showModalBottomSheet(
+                    context: context,
+                    isDismissible: false,
+                    isScrollControlled: true,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(24.0),
+                        topRight: Radius.circular(24.0),
+                      ),
+                    ),
+                    builder: (BuildContext context) {
+                      return const BoardSettingWidget();
+                    });
+              },
+              icon: const Icon(
+                Icons.more_horiz_rounded,
+              ),
+            )
+          ],
         ),
         body: _bodyScreenBody(),
       ),
@@ -118,7 +141,8 @@ class BoardScreen extends StatelessWidget {
     );
   }
 
-  _buildStatusList(BuildContext context, int statusIndex, List<StatusesModel> statuses) {
+  _buildStatusList(
+      BuildContext context, int statusIndex, List<StatusesModel> statuses) {
     if (statusIndex < statuses.length) {
       var statusList = statuses[statusIndex];
       return DragAndDropList(
@@ -155,7 +179,8 @@ class BoardScreen extends StatelessWidget {
         ),
         children: List.generate(
           statusList.cards!.length,
-          (cardIndex) => _buildCard(context, statusList.cards![cardIndex], statusList.uid!),
+          (cardIndex) => _buildCard(
+              context, statusList.cards![cardIndex], statusList.uid!),
         ),
         contentsWhenEmpty: const SizedBox(),
       );
@@ -172,22 +197,22 @@ class BoardScreen extends StatelessWidget {
     return DragAndDropItem(
       child: InkWell(
         onTap: () async {
-            final arguments = {
-              'card': card,
-              'boardId': board.uid,
-              'statusId': statusId,
-            };
-            final isSaved = await Navigator.pushNamed(
-              context,
-              RouteNames.editCard,
-              arguments: arguments,
-            );
-            if (isSaved == true) {
-              if (!context.mounted) return;
-              BlocProvider.of<BoardScreenBloc>(context)
-                  .add(BoardStatusesFetched(boardId: board.uid));
-            }
-          },
+          final arguments = {
+            'card': card,
+            'boardId': board.uid,
+            'statusId': statusId,
+          };
+          final isSaved = await Navigator.pushNamed(
+            context,
+            RouteNames.editCard,
+            arguments: arguments,
+          );
+          if (isSaved == true) {
+            if (!context.mounted) return;
+            BlocProvider.of<BoardScreenBloc>(context)
+                .add(BoardStatusesFetched(boardId: board.uid));
+          }
+        },
         child: Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(
