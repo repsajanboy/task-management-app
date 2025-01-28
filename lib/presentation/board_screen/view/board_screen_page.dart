@@ -30,7 +30,7 @@ class BoardScreen extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: AppColors.lightBlack.withValues(alpha: 0.65),
           leading: const BackButton(
-            color: Colors.white,
+            color: AppColors.mainTextColor,
           ),
           title: Text(
             board.boardTitle!,
@@ -54,11 +54,12 @@ class BoardScreen extends StatelessWidget {
                       ),
                     ),
                     builder: (BuildContext context) {
-                      return const BoardSettingWidget();
+                      return BoardSettingWidget(board: board);
                     });
               },
               icon: const Icon(
-                Icons.more_horiz_rounded,
+                Icons.settings,
+                color: AppColors.mainTextColor,
               ),
             )
           ],
