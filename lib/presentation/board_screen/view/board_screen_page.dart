@@ -13,6 +13,7 @@ import 'package:task_management_app/styles/colors.dart';
 import 'widgets/add_card_widget.dart';
 import 'widgets/add_status_widget.dart';
 import 'widgets/board_setting_widget.dart';
+import 'widgets/status_setting_widget.dart';
 
 class BoardScreen extends StatelessWidget {
   BoardScreen({super.key, required this.board});
@@ -167,9 +168,18 @@ class BoardScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0),
               ),
-              const Icon(
-                Icons.more_horiz_rounded,
-                color: AppColors.mainTextColor,
+              InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return const StatusSettingWidget();
+                      });
+                },
+                child: const Icon(
+                  Icons.more_horiz_rounded,
+                  color: AppColors.mainTextColor,
+                ),
               )
             ],
           ),

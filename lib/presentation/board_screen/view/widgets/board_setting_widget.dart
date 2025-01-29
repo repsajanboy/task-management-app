@@ -36,43 +36,42 @@ class BoardSettingWidget extends StatelessWidget {
                   topRight: Radius.circular(24.0),
                 ),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Icon(
-                      Icons.keyboard_arrow_down_rounded,
-                      size: 28.0,
-                      color: AppColors.iconGreyColor,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 5.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Icon(
+                        Icons.cancel_outlined,
+                        size: 28.0,
+                        color: AppColors.iconGreyColor,
+                      ),
                     ),
-                  ),
-                  const Text(
-                    'Board settings',
-                    style: TextStyle(
-                      fontFamily: "Montserrat",
-                      color: AppColors.mainTextColor,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w700,
+                    const Text(
+                      'Board settings',
+                      style: TextStyle(
+                        fontFamily: "Montserrat",
+                        color: AppColors.mainTextColor,
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
-                  ),
-                  const SizedBox(),
-                ],
+                    const SizedBox(),
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 24.0),
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 12.0),
               padding:
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
               width: double.infinity,
               decoration: const BoxDecoration(
                 color: AppColors.lightBlack,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(8.0),
-                ),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,11 +181,10 @@ class BoardSettingWidget extends StatelessWidget {
                                 ),
                               );
                             },
-
                             style: const MenuStyle(
-                              backgroundColor: WidgetStatePropertyAll(AppColors.background),
-                              elevation: WidgetStatePropertyAll(5.0)
-                            ),
+                                backgroundColor: WidgetStatePropertyAll(
+                                    AppColors.background),
+                                elevation: WidgetStatePropertyAll(5.0)),
                             menuChildren: [
                               SizedBox(
                                 width: MediaQuery.of(context).size.width * .50,
@@ -219,15 +217,11 @@ class BoardSettingWidget extends StatelessWidget {
             ),
             const SizedBox(height: 24.0),
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 12.0),
               padding:
                   const EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
               width: double.infinity,
               decoration: const BoxDecoration(
                 color: AppColors.lightBlack,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(8.0),
-                ),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
