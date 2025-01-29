@@ -10,8 +10,11 @@ class AppointmentBoardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<PlannerBloc, PlannerState>(
       builder: (context, state) {
-        return Padding(
+        return Container(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          decoration: const BoxDecoration(
+            color: AppColors.lightBlack
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

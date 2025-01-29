@@ -38,12 +38,6 @@ class PlannerScreen extends StatelessWidget {
                 context: context,
                 isDismissible: false,
                 isScrollControlled: true,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(24.0),
-                    topRight: Radius.circular(24.0),
-                  ),
-                ),
                 builder: (BuildContext context) {
                   return _createAppointmentModal(context);
                 },
@@ -147,10 +141,9 @@ class PlannerScreen extends StatelessWidget {
       padding: MediaQuery.of(context).viewInsets,
       child: Container(
         height: MediaQuery.of(context).size.height * .70,
-        padding: const EdgeInsets.only(top: 16.0),
         width: double.infinity,
         decoration: const BoxDecoration(
-          color: AppColors.lightBlack,
+          color: AppColors.background,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(24.0),
             topRight: Radius.circular(24.0),
@@ -163,15 +156,14 @@ class PlannerScreen extends StatelessWidget {
               _bottomModalSheetHeader(context),
               const SizedBox(height: 10.0),
               const AppointmentTitleWidget(),
-              _spaceDivider(),
+              const SizedBox(height: 10.0),
               const AppointmentTimeWidget(),
-              _spaceDivider(),
+              const SizedBox(height: 20.0),
               const AppointmentNotificationWidget(),
-              _spaceDivider(),
+              const SizedBox(height: 20.0),
               const AppointmentBoardWidget(),
-              _spaceDivider(),
+              const SizedBox(height: 20.0),
               const AppointmentDescriptionWidget(),
-              _spaceDivider(),
             ],
           ),
         ),
@@ -179,19 +171,16 @@ class PlannerScreen extends StatelessWidget {
     );
   }
 
-  Widget _spaceDivider() {
-    return const Column(
-      children: [
-        SizedBox(height: 10.0),
-        Divider(color: Colors.white24),
-        SizedBox(height: 10.0),
-      ],
-    );
-  }
-
   Widget _bottomModalSheetHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 24.0),
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 24.0, horizontal: 24.0),
+      decoration: const BoxDecoration(
+        color: AppColors.lightBlack,
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(24.0),
+            topRight: Radius.circular(24.0),
+          ),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

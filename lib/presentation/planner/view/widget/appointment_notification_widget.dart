@@ -6,8 +6,11 @@ class AppointmentNotificationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      decoration: const BoxDecoration(
+        color: AppColors.lightBlack
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
