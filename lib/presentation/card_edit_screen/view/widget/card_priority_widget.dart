@@ -27,12 +27,12 @@ Widget cardPriorityWidget(CardsModel card) {
                 border: InputBorder.none,
                 hintStyle: TextStyle(
                   fontFamily: 'Chivo',
-                  color: Colors.white70,
+                  color: AppColors.greyTextColor,
                   fontSize: 16.0,
                 )),
             textStyle: const TextStyle(
               fontFamily: 'Chivo',
-              color: Colors.white70,
+              color: AppColors.greyTextColor,
               fontSize: 16.0,
             ),
             menuStyle: const MenuStyle(

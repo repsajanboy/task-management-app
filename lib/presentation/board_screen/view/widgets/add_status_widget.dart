@@ -15,7 +15,7 @@ Widget addStatusWidget(String boardId) {
               decoration: BoxDecoration(
                 color: state.addStatusTextBoxVisible
                     ? Colors.black
-                    : AppColors.lightBlack.withOpacity(.50),
+                    : AppColors.lightBlack.withValues(alpha: .50),
                 borderRadius: BorderRadius.circular(8.0),
               ),
               child: Column(

@@ -68,10 +68,9 @@ class AddBoardWidget extends StatelessWidget {
       padding: MediaQuery.of(context).viewInsets,
       child: Container(
         height: MediaQuery.of(context).size.height * .5,
-        padding: const EdgeInsets.only(top: 16.0, left: 24.0, right: 24.0),
         width: double.infinity,
         decoration: const BoxDecoration(
-          color: AppColors.lightBlack,
+          color: AppColors.background,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(24.0),
             topRight: Radius.circular(24.0),
@@ -94,8 +93,15 @@ class AddBoardWidget extends StatelessWidget {
   }
 
   Widget _bottomModalSheetHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+      decoration: const BoxDecoration(
+        color: AppColors.lightBlack,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(12.0),
+          topRight: Radius.circular(12.0)
+        )
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

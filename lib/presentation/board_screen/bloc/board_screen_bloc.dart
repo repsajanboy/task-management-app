@@ -61,6 +61,7 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
     Emitter<BoardScreenState> emit,
   ) async {
     try {
+      final statuses = List<StatusesModel>.from(state.statuses);
       final status = StatusesModel(
           statusName: state.statusName, statusIndex: state.statuses.length + 1);
       final statusId = await boardsRepository.addBoardStatus(
@@ -73,8 +74,9 @@ class BoardScreenBloc extends Bloc<BoardScreenEvent, BoardScreenState> {
         cards: [],
       );
 
-      state.statuses.add(newStatus);
+      statuses.add(newStatus);
       emit(state.copyWith(
+        statuses: statuses,
         statusName: '',
         addStatusTextBoxVisible: false,
       ));

@@ -6,17 +6,25 @@ class AppointmentDescriptionWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.only(left: 24.0),
+      decoration: const BoxDecoration(
+        color: AppColors.lightBlack
+      ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(
-            Icons.notes_outlined,
-            color: AppColors.iconGreyColor,
+          const Padding(
+            padding: EdgeInsets.only(top: 10.0),
+            child: Icon(
+              Icons.notes_outlined,
+              color: AppColors.iconGreyColor,
+            ),
           ),
           const SizedBox(width: 18.0),
           Expanded(
             child: TextFormField(
+              maxLines: 3,
               decoration: const InputDecoration(
                 hintText: 'Description',
                 border: InputBorder.none

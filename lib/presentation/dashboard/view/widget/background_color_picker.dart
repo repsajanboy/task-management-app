@@ -9,59 +9,65 @@ class BoardBackgroundPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Background',
-          style: TextStyle(
-            fontFamily: 'Montserrat',
-            color: AppColors.mainTextColor,
-            fontSize: 16.0
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+      decoration: const BoxDecoration(
+        color: AppColors.lightBlack
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Background',
+            style: TextStyle(
+              fontFamily: 'Montserrat',
+              color: AppColors.mainTextColor,
+              fontSize: 16.0
+            ),
           ),
-        ),
-        const SizedBox(height: 10.0),
-        GridView.builder(
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4,
-              crossAxisSpacing: 10.0,
-              mainAxisSpacing: 10.0,
-              childAspectRatio: 1.25),
-          shrinkWrap: true,
-          itemCount: boardBackgroundColors.length,
-          itemBuilder: (context, index) {
-            return BlocBuilder<BoardsListBloc, BoardsListState>(
-              builder: (context, state) {
-                return InkWell(
-                  onTap: () {
-                    context
-                        .read<BoardsListBloc>()
-                        .add(CreateBoardBackgroundColorSelected(
-                          boardBackgroundColor:
-                              boardBackgroundColors[index].value,
-                          selectedBackgroundColorIndex: index,
-                        ));
-                  },
-                  child: Container(
-                    width: 30,
-                    height: 30,
-                    decoration: BoxDecoration(
-                        color: boardBackgroundColors[index],
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(8.0))),
-                    child: Icon(
-                      Icons.check,
-                      color: state.selectedBackgroundColorIndex == index
-                          ? Colors.white
-                          : boardBackgroundColors[index],
+          const SizedBox(height: 10.0),
+          GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 4,
+                crossAxisSpacing: 10.0,
+                mainAxisSpacing: 10.0,
+                childAspectRatio: 1.25),
+            shrinkWrap: true,
+            itemCount: boardBackgroundColors.length,
+            itemBuilder: (context, index) {
+              return BlocBuilder<BoardsListBloc, BoardsListState>(
+                builder: (context, state) {
+                  return InkWell(
+                    onTap: () {
+                      context
+                          .read<BoardsListBloc>()
+                          .add(CreateBoardBackgroundColorSelected(
+                            boardBackgroundColor:
+                                boardBackgroundColors[index].value,
+                            selectedBackgroundColorIndex: index,
+                          ));
+                    },
+                    child: Container(
+                      width: 30,
+                      height: 30,
+                      decoration: BoxDecoration(
+                          color: boardBackgroundColors[index],
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8.0))),
+                      child: Icon(
+                        Icons.check,
+                        color: state.selectedBackgroundColorIndex == index
+                            ? Colors.white
+                            : boardBackgroundColors[index],
+                      ),
                     ),
-                  ),
-                );
-              },
-            );
-          },
-        ),
-      ],
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }

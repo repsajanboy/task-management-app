@@ -8,10 +8,9 @@ Widget cardDescriptionTextFormField(CardsModel card) {
   return BlocBuilder<CardEditBloc, CardEditState>(
     builder: (context, state) {
       return Container(
-        padding: const EdgeInsets.only(
-          top: 12.0,
-          left: 12.0,
-          right: 12.0,
+        padding: const EdgeInsets.all(12.0),
+        decoration: const BoxDecoration(
+          color: AppColors.lightBlack,
         ),
         child: TextFormField(
           initialValue: state.description ?? card.description,
@@ -26,16 +25,28 @@ Widget cardDescriptionTextFormField(CardsModel card) {
             hintText: 'Add a description...',
             border: OutlineInputBorder(
               borderSide: BorderSide(
-                color: Colors.white54,
+                color: Colors.white12,
+              ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(8.0),
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.white30,
               ),
               borderRadius: BorderRadius.all(
                 Radius.circular(8.0),
               ),
             ),
             focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-              color: Colors.white54,
-            )),
+              borderSide: BorderSide(
+                color: Colors.white30,
+              ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(8.0),
+              ),
+            ),
           ),
           onChanged: (value) {
             context
