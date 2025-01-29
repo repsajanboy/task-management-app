@@ -5,6 +5,7 @@ import 'package:task_management_app/networking/repositories/repositories.dart';
 import 'package:task_management_app/presentation/card_edit_screen/card_edit.dart';
 import 'package:task_management_app/presentation/card_edit_screen/view/widget/card_dates_widget.dart';
 import 'package:task_management_app/presentation/card_edit_screen/view/widget/card_description_widget.dart';
+import 'package:task_management_app/presentation/card_edit_screen/view/widget/card_move_widget.dart';
 import 'package:task_management_app/presentation/card_edit_screen/view/widget/card_priority_widget.dart';
 import 'package:task_management_app/styles/colors.dart';
 
@@ -73,11 +74,7 @@ class CardEditScreen extends StatelessWidget {
     return Column(
       children: [
         Container(
-          padding: const EdgeInsets.only(
-            top: 12.0,
-            left: 12.0,
-            right: 12.0,
-          ),
+          padding: const EdgeInsets.all(12.0),
           child: BlocBuilder<CardEditBloc, CardEditState>(
             builder: (context, state) {
               return TextFormField(
@@ -89,6 +86,7 @@ class CardEditScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0,
                 ),
+                maxLines: null,
                 decoration: const InputDecoration(
                   border: InputBorder.none,
                   isDense: true,
@@ -105,7 +103,10 @@ class CardEditScreen extends StatelessWidget {
         cardDescriptionTextFormField(card),
         const SizedBox(height: 10.0),
         cardDatesWidget(card),
+        const SizedBox(height: 10.0),
         cardPriorityWidget(card),
+        const SizedBox(height: 10.0),
+        cardMoveArchiveWidget(),
       ],
     );
   }

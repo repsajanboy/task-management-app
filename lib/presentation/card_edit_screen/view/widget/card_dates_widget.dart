@@ -45,7 +45,7 @@ Widget cardDatesWidget(CardsModel card) {
                           : 'Start date...',
                       style: const TextStyle(
                          fontFamily: 'Chivo',
-                        color: Colors.white70,
+                        color: AppColors.greyTextColor,
                         fontSize: 16.0,
                       ),
                     ),
@@ -55,7 +55,7 @@ Widget cardDatesWidget(CardsModel card) {
             );
           },
         ),
-        const Divider(thickness: .5),
+        const Divider(thickness: .3),
         BlocBuilder<CardEditBloc, CardEditState>(
           builder: (context, state) {
             return InkWell(
@@ -86,7 +86,7 @@ Widget cardDatesWidget(CardsModel card) {
                           : 'Due date...',
                       style: const TextStyle(
                         fontFamily: 'Chivo',
-                        color: Colors.white70,
+                        color: AppColors.greyTextColor,
                         fontSize: 16.0,
                       ),
                     ),
